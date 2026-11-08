@@ -1,0 +1,17 @@
+/_build/
+/cover/
+/deps/
+/doc/
+/tmp/
+/priv/plts/
+erl_crash.dump
+*.ez
+.elixir_ls/
+perplexed-*.tar
+.claude
+.codex
+.opencode
+openspec
+.playwright-mcp
+.superpowers
+.DS_Store
