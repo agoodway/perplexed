@@ -22,7 +22,7 @@ defmodule Perplexed do
   its USD cost.
   """
 
-  alias Perplexed.{Document, Scrape, Search}
+  alias Perplexed.{Answer, Document, Pipeline, Scrape, Search, Settings}
   alias Perplexed.Search.Result
 
   @typedoc """
@@ -45,7 +45,7 @@ defmodule Perplexed do
   """
   @spec child_spec(keyword()) :: Supervisor.child_spec()
   def child_spec(settings) when is_list(settings),
-    do: %{id: __MODULE__, start: {Perplexed.Settings, :start_link, [fn -> settings end]}}
+    do: %{id: __MODULE__, start: {Settings, :start_link, [fn -> settings end]}}
 
   @doc """
   Searches the web for `query`.
@@ -86,8 +86,8 @@ defmodule Perplexed do
   summarize) and returns the answer with its sources and every hit
   considered. See `Perplexed.Pipeline.run/2`.
   """
-  @spec answer(String.t(), keyword()) :: {:ok, Perplexed.Answer.t()} | {:error, error()}
-  defdelegate answer(query, opts \\ []), to: Perplexed.Pipeline, as: :run
+  @spec answer(String.t(), keyword()) :: {:ok, Answer.t()} | {:error, error()}
+  defdelegate answer(query, opts \\ []), to: Pipeline, as: :run
 
   defp maybe_scrape(result, false, _scrape_opts), do: result
 

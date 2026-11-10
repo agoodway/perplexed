@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html class="no-js theme-auto center-alignment-no" lang="en-EN" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="endpoint" content="results">
+  <meta name="description" content="SearXNG — a privacy-respecting, open metasearch engine">
+  <meta name="keywords" content="SearXNG, search, search engine, metasearch, meta search">
+  <meta name="generator" content="searxng/2026.11.8+3a3dd15bf">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noarchive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shrt.win</title>
+  <script type="module" src="/static/themes/simple/sxng-core.min.js" client_settings="eyJwbHVnaW5zIjogWyJzZWxmX2luZm8iLCAidGltZV96b25lIiwgImNhbGN1bGF0b3IiLCAiaGFzaF9wbHVnaW4iLCAidW5pdF9jb252ZXJ0ZXIiLCAib2FfZG9pX3Jld3JpdGUiLCAidHJhY2tlcl91cmxfcmVtb3ZlciJdLCAiYXV0b2NvbXBsZXRlIjogIiIsICJhdXRvY29tcGxldGVfbWluIjogNCwgIm1ldGhvZCI6ICJHRVQiLCAidHJhbnNsYXRpb25zIjogeyJub19pdGVtX2ZvdW5kIjogIk5vIGl0ZW0gZm91bmQiLCAiU291cmNlIjogIlNvdXJjZSIsICJlcnJvcl9sb2FkaW5nX25leHRfcGFnZSI6ICJFcnJvciBsb2FkaW5nIHRoZSBuZXh0IHBhZ2UiLCAiY2xvc2UiOiAiY2xvc2UiLCAiaG90a2V5c19uYXZpZ2F0aW9uX3RpdGxlIjogIkhvdyB0byBuYXZpZ2F0ZSBTZWFyWE5HIHdpdGggaG90a2V5cyIsICJob3RrZXlzX2NhdGVnb3J5X2NvbnRyb2wiOiAiQ29udHJvbCIsICJob3RrZXlzX2NhdGVnb3J5X3Jlc3VsdHMiOiAiUmVzdWx0cyIsICJob3RrZXlzX2NhdGVnb3J5X25hdmlnYXRpb24iOiAiTmF2aWdhdGlvbiIsICJob3RrZXlzX2NhdGVnb3J5X290aGVyIjogIk90aGVyIiwgImhvdGtleXNfcmVtb3ZlX2ZvY3VzIjogInJlbW92ZSBmb2N1cyBmcm9tIHRoZSBmb2N1c2VkIGlucHV0IiwgImhvdGtleXNfY29weV91cmwiOiAiY29weSB1cmwgb2YgdGhlIHNlbGVjdGVkIHJlc3VsdCB0byB0aGUgY2xpcGJvYXJkIiwgImhvdGtleXNfdG9nZ2xlX2hlbHAiOiAidG9nZ2xlIGhlbHAgd2luZG93IiwgImhvdGtleXNfZm9jdXNfc2VhcmNoIjogImZvY3VzIG9uIHRoZSBzZWFyY2ggaW5wdXQiLCAiaG90a2V5c19uZXh0X3BhZ2UiOiAiZ28gdG8gbmV4dCBwYWdlIiwgImhvdGtleXNfb3Blbl9yZXN1bHQiOiAib3BlbiBzZWFyY2ggcmVzdWx0IiwgImhvdGtleXNfcHJldmlvdXNfcGFnZSI6ICJnbyB0byBwcmV2aW91cyBwYWdlIiwgImhvdGtleXNfcmVsb2FkX3BhZ2UiOiAicmVsb2FkIHBhZ2UgZnJvbSB0aGUgc2VydmVyIiwgImhvdGtleXNfb3Blbl9uZXdfdGFiIjogIm9wZW4gdGhlIHJlc3VsdCBpbiBhIG5ldyB0YWIiLCAiaG90a2V5c19zZWxlY3RfcHJldmlvdXMiOiAic2VsZWN0IHByZXZpb3VzIHNlYXJjaCByZXN1bHQiLCAiaG90a2V5c19zZWxlY3RfbmV4dCI6ICJzZWxlY3QgbmV4dCBzZWFyY2ggcmVzdWx0IiwgImhvdGtleXNfcGFnZV91cCI6ICJzY3JvbGwgb25lIHBhZ2UgdXAiLCAiaG90a2V5c19oYWxmX3BhZ2VfZG93biI6ICJzY3JvbGwgaGFsZiBhIHBhZ2UgZG93biIsICJob3RrZXlzX3BhZ2VfZG93biI6ICJzY3JvbGwgb25lIHBhZ2UgZG93biIsICJob3RrZXlzX3Njcm9sbF90b3AiOiAic2Nyb2xsIHRvIHRoZSB0b3Agb2YgdGhlIHBhZ2UiLCAiaG90a2V5c19oYWxmX3BhZ2VfdXAiOiAic2Nyb2xsIGhhbGYgYSBwYWdlIHVwIiwgImhvdGtleXNfc2Nyb2xsX2JvdHRvbSI6ICJzY3JvbGwgdG8gdGhlIGJvdHRvbSBvZiB0aGUgcGFnZSJ9LCAic2VhcmNoX29uX2NhdGVnb3J5X3NlbGVjdCI6IHRydWUsICJob3RrZXlzIjogImRlZmF1bHQiLCAidXJsX2Zvcm1hdHRpbmciOiAicHJldHR5IiwgInRoZW1lX3N0YXRpY19wYXRoIjogIi9zdGF0aWMvdGhlbWVzL3NpbXBsZSIsICJyZXN1bHRzX29uX25ld190YWIiOiBmYWxzZSwgImZhdmljb25fcmVzb2x2ZXIiOiAiIiwgInF1ZXJ5X2luX3RpdGxlIjogZmFsc2UsICJzYWZlc2VhcmNoIjogMCwgInRoZW1lIjogInNpbXBsZSIsICJkb2lfcmVzb2x2ZXIiOiAiaHR0cHM6Ly9vYWRvaS5vcmcvIn0="></script>
+<link rel="alternate" type="application/rss+xml" title="Searx search: elixir genserver timeout" href="https://shrt.win/search?q=elixir%20genserver%20timeout&amp;categories=general&amp;pageno=1&amp;time_range=&amp;language=auto&amp;safesearch=0&amp;format=rss">  <link rel="stylesheet" href="/static/themes/simple/sxng-ltr.min.css" type="text/css" media="screen">
+  <noscript>
+    <link rel="stylesheet" href="/static/themes/simple/sxng-noscript.min.css" type="text/css">
+  </noscript>
+  <link rel="stylesheet" href="/clientawxu2gvmp3i8jxst.css" type="text/css">
+  <link title="shrt.win" type="application/opensearchdescription+xml" rel="search" href="/opensearch.xml?method=GET&amp;autocomplete=">
+  <link rel="icon" href="/static/themes/simple/img/favicon.png" sizes="any">
+  <link rel="icon" href="/static/themes/simple/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/themes/simple/img/favicon.png">
+  <link rel="manifest" href="/manifest.json" />
+</head>
+<body class="results_endpoint" >
+  <main id="main_results" class="">
+
+    <nav id="links_on_top"><a href="/info/en/about" class="link_on_top_about"><svg viewBox="0 0 512 512" aria-hidden="true" class="sxng-icon-set-big"><path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M248 64C146.39 64 64 146.39 64 248s82.39 184 184 184 184-82.39 184-184S349.61 64 248 64z"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M220 220h32v116"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M208 340h88"/><path d="M248 130a26 26 0 1026 26 26 26 0 00-26-26z" fill="currentColor" stroke="currentColor" stroke-miterlimit="10" stroke-width="1"/></svg><span>About</span></a><a href="/preferences" class="link_on_top_preferences"><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M262.29 192.31a64 64 0 1 0 57.4 57.4 64.13 64.13 0 0 0-57.4-57.4M416.39 256a154 154 0 0 1-1.53 20.79l45.21 35.46a10.81 10.81 0 0 1 2.45 13.75l-42.77 74a10.81 10.81 0 0 1-13.14 4.59l-44.9-18.08a16.11 16.11 0 0 0-15.17 1.75A164.5 164.5 0 0 1 325 400.8a15.94 15.94 0 0 0-8.82 12.14l-6.73 47.89a11.08 11.08 0 0 1-10.68 9.17h-85.54a11.11 11.11 0 0 1-10.69-8.87l-6.72-47.82a16.07 16.07 0 0 0-9-12.22 155 155 0 0 1-21.46-12.57 16 16 0 0 0-15.11-1.71l-44.89 18.07a10.81 10.81 0 0 1-13.14-4.58l-42.77-74a10.8 10.8 0 0 1 2.45-13.75l38.21-30a16.05 16.05 0 0 0 6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 0 0-6.07-13.94l-38.19-30A10.81 10.81 0 0 1 49.48 186l42.77-74a10.81 10.81 0 0 1 13.14-4.59l44.9 18.08a16.11 16.11 0 0 0 15.17-1.75A164.5 164.5 0 0 1 187 111.2a15.94 15.94 0 0 0 8.82-12.14l6.73-47.89A11.08 11.08 0 0 1 213.23 42h85.54a11.11 11.11 0 0 1 10.69 8.87l6.72 47.82a16.07 16.07 0 0 0 9 12.22 155 155 0 0 1 21.46 12.57 16 16 0 0 0 15.11 1.71l44.89-18.07a10.81 10.81 0 0 1 13.14 4.58l42.77 74a10.8 10.8 0 0 1-2.45 13.75l-38.21 30a16.05 16.05 0 0 0-6.05 14.08c.33 4.14.55 8.3.55 12.47" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg><span>Preferences</span></a></nav>
+<form id="search" method="GET" action="/search" role="search">
+  <div id="search_header">
+    <a id="search_logo" href="/" tabindex="0" title="Display the front page">
+      <span hidden>SearXNG</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="92mm" height="92mm" viewBox="0 0 92 92"><g transform="translate(-40.921 -17.417)"><circle cx="75.921" cy="53.903" r="30" fill="none" fill-opacity="1" stroke="#3050ff" stroke-width="10" stroke-miterlimit="4" stroke-dasharray="none" stroke-opacity="1"/><path d="M67.515 37.915a18 18 0 0 1 21.051 3.313 18 18 0 0 1 3.138 21.078" fill="none" fill-opacity="1" stroke="#3050ff" stroke-width="5" stroke-miterlimit="4" stroke-dasharray="none" stroke-opacity="1"/><rect width="18.846" height="39.963" x="3.706" y="122.09" ry="0" transform="rotate(-46.235)" opacity="1" fill="#3050ff" fill-opacity="1" stroke="none" stroke-width="8" stroke-miterlimit="4" stroke-dasharray="none" stroke-opacity="1"/></g></svg>    </a>
+    <div id="search_view">
+      <div class="search_box">
+        <input id="q" name="q" type="text" placeholder="Search for..." tabindex="1" autocomplete="off" autocapitalize="none" spellcheck="false" autocorrect="off" dir="auto" value="elixir genserver timeout">
+        <button id="clear_search" type="reset" aria-label="clear" class="hide_if_nojs"><span><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M368 368 144 144M368 144 144 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg></span></button>
+        <button id="send_search" type="submit"name="category_general"aria-label="search"><span class="hide_if_nojs"><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M221.09 64a157.09 157.09 0 1 0 157.09 157.09A157.1 157.1 0 0 0 221.09 64Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><path d="M338.29 338.29 448 448" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32px"/></svg></span><span class="show_if_nojs">search</span></button>
+        <div class="autocomplete hide_if_nojs"><ul></ul></div>
+      </div>
+    </div>
+<div id="categories" class="search_categories"><div id="categories_container">
+<button type="submit" name="category_general" class="category category_button selected"><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M221.09 64a157.09 157.09 0 1 0 157.09 157.09A157.1 157.1 0 0 0 221.09 64Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><path d="M338.29 338.29 448 448" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32px"/></svg><div class="category_name">general</div></button>
+<button type="submit" name="category_images" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><rect width="416" height="352" x="48" y="80" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32px"/><circle cx="336" cy="176" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><path d="m304 335.79-90.66-90.49a32 32 0 0 0-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0 1 43.11-2L464 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg><div class="category_name">images</div></button>
+<button type="submit" name="category_videos" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M112 111v290c0 17.44 17 28.52 31 20.16l247.9-148.37c12.12-7.25 12.12-26.33 0-33.58L143 90.84c-14-8.36-31 2.72-31 20.16Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><div class="category_name">videos</div></button>
+<button type="submit" name="category_news" class="category category_button "><svg viewBox="0 0 512 512" aria-hidden="true" class="sxng-icon-set-big"><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" d="M368 415.86V72a24.07 24.07 0 00-24-24H72a24.07 24.07 0 00-24 24v352a40.12 40.12 0 0040 40h328"/><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" d="M416 464h0a48 48 0 01-48-48V128h72a24 24 0 0124 24v264a48 48 0 01-48 48z"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M240 128h64M240 192h64M112 256h192M112 320h192M112 384h192"/><path fill="currentColor" stroke="currentColor" stroke-linejoin="round" stroke-width="1" d="M176 208h-64a16 16 0 01-16-16v-64a16 16 0 0116-16h64a16 16 0 0116 16v64a16 16 0 01-16 16z"/></svg><div class="category_name">news</div></button>
+<button type="submit" name="category_map" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M256 48c-79.5 0-144 61.39-144 137 0 87 96 224.87 131.25 272.49a15.77 15.77 0 0 0 25.5 0C304 409.89 400 272.07 400 185c0-75.61-64.5-137-144-137" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/><circle cx="256" cy="192" r="48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg><div class="category_name">map</div></button>
+<button type="submit" name="category_music" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M192 218v-6c0-14.84 10-27 24.24-30.59l174.59-46.68A20 20 0 0 1 416 154v22" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/><path d="M416 295.94v80c0 13.91-8.93 25.59-22 30l-22 8c-25.9 8.72-52-10.42-52-38h0a33.37 33.37 0 0 1 23-32l51-18.15c13.07-4.4 22-15.94 22-29.85V58a10 10 0 0 0-12.6-9.61L204 102a16.48 16.48 0 0 0-12 16v226c0 13.91-8.93 25.6-22 30l-52 18c-13.88 4.68-22 17.22-22 32h0c0 27.58 26.52 46.55 52 38l22-8c13.07-4.4 22-16.08 22-30v-80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg><div class="category_name">music</div></button>
+<button type="submit" name="category_it" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="m434.8 137.65-149.36-68.1c-16.19-7.4-42.69-7.4-58.88 0L77.3 137.65c-17.6 8-17.6 21.09 0 29.09l148 67.5c16.89 7.7 44.69 7.7 61.58 0l148-67.5c17.52-8 17.52-21.1-.08-29.09M160 308.52l-82.7 37.11c-17.6 8-17.6 21.1 0 29.1l148 67.5c16.89 7.69 44.69 7.69 61.58 0l148-67.5c17.6-8 17.6-21.1 0-29.1l-79.94-38.47" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/><path d="m160 204.48-82.8 37.16c-17.6 8-17.6 21.1 0 29.1l148 67.49c16.89 7.7 44.69 7.7 61.58 0l148-67.49c17.7-8 17.7-21.1.1-29.1L352 204.48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg><div class="category_name">it</div></button>
+<button type="submit" name="category_science" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M32 192 256 64l224 128-224 128z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/><path d="M112 240v128l144 80 144-80V240M480 368V192M256 320v128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg><div class="category_name">science</div></button>
+<button type="submit" name="category_files" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M384 80H128c-26 0-43 14-48 40L48 272v112a48.14 48.14 0 0 0 48 48h320a48.14 48.14 0 0 0 48-48V272l-32-152c-5-27-23-40-48-40Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32px"/><path d="M48 272h144M320 272h144M192 272a64 64 0 0 0 128 0M144 144h224M128 208h256" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/></svg><div class="category_name">files</div></button>
+<button type="submit" name="category_social media" class="category category_button "><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-big" aria-hidden="true"><path d="M402 168c-2.93 40.67-33.1 72-66 72s-63.12-31.32-66-72c-3-42.31 26.37-72 66-72s69 30.46 66 72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/><path d="M336 304c-65.17 0-127.84 32.37-143.54 95.41-2.08 8.34 3.15 16.59 11.72 16.59h263.65c8.57 0 13.77-8.25 11.72-16.59C463.85 335.36 401.18 304 336 304Z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><path d="M200 185.94c-2.34 32.48-26.72 58.06-53 58.06s-50.7-25.57-53-58.06C91.61 152.15 115.34 128 147 128s55.39 24.77 53 57.94" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32px"/><path d="M206 306c-18.05-8.27-37.93-11.45-59-11.45-52 0-102.1 25.85-114.65 76.2-1.65 6.66 2.53 13.25 9.37 13.25H154" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32px"/></svg><div class="category_name">social media</div></button><input name="categories" id="selected-categories" type="hidden" />
+</div></div>  </div>
+  <div class="search_filters">
+<select class="language" id="language" name="language" aria-label="Search language"><option value="all">Default language [all]</option><option value="auto" selected="selected">Auto-detect (en-US)</option><option value="af">
+            Afrikaans [af] 🌐</option><option value="ca">
+            Català [ca] 🌐</option><option value="ca-ES">
+            Català-Espanya [ca-ES] 🇪🇸</option><option value="cy">
+            Cymraeg [cy] 🌐</option><option value="da">
+            Dansk [da] 🌐</option><option value="da-DK">
+            Dansk-Danmark [da-DK] 🇩🇰</option><option value="de">
+            Deutsch [de] 🌐</option><option value="de-AT">
+            Deutsch-Österreich [de-AT] 🇦🇹</option><option value="de-BE">
+            Deutsch-Belgien [de-BE] 🇧🇪</option><option value="de-CH">
+            Deutsch-Schweiz [de-CH] 🇨🇭</option><option value="de-DE">
+            Deutsch-Deutschland [de-DE] 🇩🇪</option><option value="et">
+            Eesti [et] 🌐</option><option value="et-EE">
+            Eesti-Eesti [et-EE] 🇪🇪</option><option value="en">
+            English [en] 🌐</option><option value="en-AU">
+            English-Australia [en-AU] 🇦🇺</option><option value="en-CA">
+            English-Canada [en-CA] 🇨🇦</option><option value="en-GB">
+            English-United Kingdom [en-GB] 🇬🇧</option><option value="en-HK">
+            English-Hong Kong SAR China [en-HK] 🇭🇰</option><option value="en-IE">
+            English-Ireland [en-IE] 🇮🇪</option><option value="en-IN">
+            English-India [en-IN] 🇮🇳</option><option value="en-NZ">
+            English-New Zealand [en-NZ] 🇳🇿</option><option value="en-PH">
+            English-Philippines [en-PH] 🇵🇭</option><option value="en-PK">
+            English-Pakistan [en-PK] 🇵🇰</option><option value="en-SG">
+            English-Singapore [en-SG] 🇸🇬</option><option value="en-US">
+            English-United States [en-US] 🇺🇸</option><option value="en-ZA">
+            English-South Africa [en-ZA] 🇿🇦</option><option value="es">
+            Español [es] 🌐</option><option value="es-AR">
+            Español-Argentina [es-AR] 🇦🇷</option><option value="es-CL">
+            Español-Chile [es-CL] 🇨🇱</option><option value="es-CO">
+            Español-Colombia [es-CO] 🇨🇴</option><option value="es-ES">
+            Español-España [es-ES] 🇪🇸</option><option value="es-MX">
+            Español-México [es-MX] 🇲🇽</option><option value="es-PE">
+            Español-Perú [es-PE] 🇵🇪</option><option value="es-VE">
+            Español-Venezuela [es-VE] 🇻🇪</option><option value="fil">
+            Filipino [fil] 🌐</option><option value="fil-PH">
+            Filipino-Pilipinas [fil-PH] 🇵🇭</option><option value="fr">
+            Français [fr] 🌐</option><option value="fr-BE">
+            Français-Belgique [fr-BE] 🇧🇪</option><option value="fr-CA">
+            Français-Canada [fr-CA] 🇨🇦</option><option value="fr-CH">
+            Français-Suisse [fr-CH] 🇨🇭</option><option value="fr-FR">
+            Français-France [fr-FR] 🇫🇷</option><option value="gl">
+            Galego [gl] 🌐</option><option value="hr">
+            Hrvatski [hr] 🌐</option><option value="hr-HR">
+            Hrvatski-Hrvatska [hr-HR] 🇭🇷</option><option value="id">
+            Indonesia [id] 🌐</option><option value="id-ID">
+            Indonesia-Indonesia [id-ID] 🇮🇩</option><option value="it">
+            Italiano [it] 🌐</option><option value="it-CH">
+            Italiano-Svizzera [it-CH] 🇨🇭</option><option value="it-IT">
+            Italiano-Italia [it-IT] 🇮🇹</option><option value="lv">
+            Latviešu [lv] 🌐</option><option value="lv-LV">
+            Latviešu-Latvija [lv-LV] 🇱🇻</option><option value="lt">
+            Lietuvių [lt] 🌐</option><option value="lt-LT">
+            Lietuvių-Lietuva [lt-LT] 🇱🇹</option><option value="hu">
+            Magyar [hu] 🌐</option><option value="hu-HU">
+            Magyar-Magyarország [hu-HU] 🇭🇺</option><option value="mi">
+            Māori [mi] 🌐</option><option value="mi-NZ">
+            Māori-Aotearoa [mi-NZ] 🇳🇿</option><option value="nl">
+            Nederlands [nl] 🌐</option><option value="nl-BE">
+            Nederlands-België [nl-BE] 🇧🇪</option><option value="nl-NL">
+            Nederlands-Nederland [nl-NL] 🇳🇱</option><option value="nb">
+            Norsk Bokmål [nb] 🌐</option><option value="nb-NO">
+            Norsk Bokmål-Norge [nb-NO] 🇳🇴</option><option value="nn">
+            Norsk Nynorsk [nn] 🌐</option><option value="nn-NO">
+            Norsk Nynorsk-Noreg [nn-NO] 🇳🇴</option><option value="pl">
+            Polski [pl] 🌐</option><option value="pl-PL">
+            Polski-Polska [pl-PL] 🇵🇱</option><option value="pt">
+            Português [pt] 🌐</option><option value="pt-BR">
+            Português-Brasil [pt-BR] 🇧🇷</option><option value="pt-PT">
+            Português-Portugal [pt-PT] 🇵🇹</option><option value="ro">
+            Română [ro] 🌐</option><option value="ro-RO">
+            Română-România [ro-RO] 🇷🇴</option><option value="sq">
+            Shqip [sq] 🌐</option><option value="sk">
+            Slovenčina [sk] 🌐</option><option value="sk-SK">
+            Slovenčina-Slovensko [sk-SK] 🇸🇰</option><option value="sl">
+            Slovenščina [sl] 🌐</option><option value="sl-SI">
+            Slovenščina-Slovenija [sl-SI] 🇸🇮</option><option value="fi">
+            Suomi [fi] 🌐</option><option value="fi-FI">
+            Suomi-Suomi [fi-FI] 🇫🇮</option><option value="sv">
+            Svenska [sv] 🌐</option><option value="sv-FI">
+            Svenska-Finland [sv-FI] 🇫🇮</option><option value="sv-SE">
+            Svenska-Sverige [sv-SE] 🇸🇪</option><option value="vi">
+            Tiếng Việt [vi] 🌐</option><option value="vi-VN">
+            Tiếng Việt-Việt Nam [vi-VN] 🇻🇳</option><option value="tr">
+            Türkçe [tr] 🌐</option><option value="tr-TR">
+            Türkçe-Türkiye [tr-TR] 🇹🇷</option><option value="cs">
+            Čeština [cs] 🌐</option><option value="cs-CZ">
+            Čeština-Česko [cs-CZ] 🇨🇿</option><option value="el">
+            Ελληνικά [el] 🌐</option><option value="el-GR">
+            Ελληνικά-Ελλάδα [el-GR] 🇬🇷</option><option value="bg">
+            Български [bg] 🌐</option><option value="bg-BG">
+            Български-България [bg-BG] 🇧🇬</option><option value="ru">
+            Русский [ru] 🌐</option><option value="ru-RU">
+            Русский-Россия [ru-RU] 🇷🇺</option><option value="uk">
+            Українська [uk] 🌐</option><option value="uk-UA">
+            Українська-Україна [uk-UA] 🇺🇦</option><option value="ar">
+            العربية [ar] 🌐</option><option value="ar-SA">
+            العربية-المملكة العربية السعودية [ar-SA] 🇸🇦</option><option value="fa">
+            فارسی [fa] 🌐</option><option value="hi">
+            हिन्दी [hi] 🌐</option><option value="hi-IN">
+            हिन्दी-भारत [hi-IN] 🇮🇳</option><option value="th">
+            ไทย [th] 🌐</option><option value="th-TH">
+            ไทย-ไทย [th-TH] 🇹🇭</option><option value="zh">
+            中文 [zh] 🌐</option><option value="zh-CN">
+            中文-中国 [zh-CN] 🇨🇳</option><option value="zh-HK">
+            中文-中國香港特別行政區 [zh-HK] 🇭🇰</option><option value="zh-TW">
+            中文-台灣 [zh-TW] 🇹🇼</option><option value="ja">
+            日本語 [ja] 🌐</option><option value="ja-JP">
+            日本語-日本 [ja-JP] 🇯🇵</option><option value="ko">
+            한국어 [ko] 🌐</option><option value="ko-KR">
+            한국어-대한민국 [ko-KR] 🇰🇷</option></select><select name="time_range" id="time_range" class="time_range" aria-label="Time range"><option id="time-range-anytime" value="" selected>Anytime</option><option id="time-range-day" value="day" >Last day</option><option id="time-range-week" value="week" >Last week</option><option id="time-range-month" value="month" >Last month</option><option id="time-range-year" value="year" >Last year</option></select><select  name="safesearch" id="safesearch" class="safesearch" aria-label="SafeSearch">
+    <option value="2"  aria-label="Strict">SafeSearch: Strict</option>
+    <option value="1"  aria-label="Moderate">SafeSearch: Moderate</option>
+    <option value="0" selected="selected" aria-label="None">SafeSearch: None</option>
+</select>  </div>
+  <input type="hidden" name="theme" value="simple" >
+</form>
+
+<div id="results" class="only_template_default">
+    <div id="sidebar"><div id="engines_msg">
+  <details class="sidebar-collapsible">
+    <summary class="title" id="engines_msg-title">Response time: 0.6 seconds</summary>
+    <table class="engine-stats" id="engines_msg-table"><tr>
+        <td class="engine-name">
+          <a href="/stats?engine=brave"
+             title="View error logs and submit a bug report">brave</a>
+        </td>
+        <td class="response-error">Suspended: too many requests</td>
+      </tr><tr>
+        <td class="engine-name"><a href="/stats?engine=duckduckgo">duckduckgo</a></td>
+        <td class="response-time">
+          <div class="bar-chart-value">0.6</div>
+          <div class="bar-chart-graph" aria-labelledby="duckduckgo_time" aria-hidden="true">
+            <div class="bar-chart-bar bar100"></div>
+          </div>
+        </td>
+      </tr><tr>
+        <td class="engine-name"><a href="/stats?engine=wikipedia">wikipedia</a></td>
+        <td class="response-time">
+          <div class="bar-chart-value">0.5</div>
+          <div class="bar-chart-graph" aria-labelledby="wikipedia_time" aria-hidden="true">
+            <div class="bar-chart-bar bar80"></div>
+          </div>
+        </td>
+      </tr><tr>
+        <td class="engine-name"><a href="/stats?engine=google+cse">google cse</a></td>
+        <td class="response-time">
+          <div class="bar-chart-value">0.4</div>
+          <div class="bar-chart-graph" aria-labelledby="google cse_time" aria-hidden="true">
+            <div class="bar-chart-bar bar59"></div>
+          </div>
+        </td>
+      </tr><tr>
+        <td class="engine-name"><a href="/stats?engine=bing">bing</a></td>
+        <td class="response-time">
+          <div class="bar-chart-value">0.1</div>
+          <div class="bar-chart-graph" aria-labelledby="bing_time" aria-hidden="true">
+            <div class="bar-chart-bar bar20"></div>
+          </div>
+        </td>
+      </tr><tr>
+        <td class="engine-name"><a href="/stats?engine=mwmbl">mwmbl</a></td>
+        <td class="response-time">
+          <div class="bar-chart-value">0.1</div>
+          <div class="bar-chart-graph" aria-labelledby="mwmbl_time" aria-hidden="true">
+            <div class="bar-chart-bar bar12"></div>
+          </div>
+        </td>
+      </tr></table>
+  </details>
+</div><div id="sidebar-end-collapsible"></div>
+    </div><div id="urls" role="main">
+
+<article class="result result-default category-general"><div class="result_inner"><a href="https://hexdocs.pm/elixir/GenServer.html" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://hexdocs.pm</span></span><span class="url_o2"><span class="url_i2"> › elixir › GenServer.html</span></span>  </div></a><h3><a href="https://hexdocs.pm/elixir/GenServer.html" rel="noreferrer"><span class="highlight">GenServer</span> behaviour (<span class="highlight">Elixir</span> v1.20.5) - Hexdocs</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    <span class="highlight">timeout</span> is an integer greater than zero which specifies how many milliseconds to wait for a reply, or the atom :infinity to wait indefinitely. The default value ...
+  </p></div>
+<div class="engines">
+<span>google cse</span><span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://hexdocs.pm/elixir/GenServer.html" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q11304353466" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://detail.chiebukuro.yahoo.co.jp</span></span><span class="url_o2"><span class="url_i2"> › qa › question_detail › q11304353466</span></span>  </div></a><h3><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q11304353466" rel="noreferrer">Pornhubで45万の請求が来てしまって年齢確認のところを押しただけ …</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Pornhubで45万の請求が来てしまって 年齢確認 のところを押しただけで出てしまったんですが ワンクリック詐欺 でしょうか...？？ …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q11304353466" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://elixir-lang.org/downloads/cheatsheets/gen-server.pdf" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixir-lang.org</span></span><span class="url_o2"><span class="url_i2"> › downloads › cheatsheets › gen-server.pdf</span></span>  </div></a><h3><a href="https://elixir-lang.org/downloads/cheatsheets/gen-server.pdf" rel="noreferrer">PDF <span class="highlight">GenServer</span> - a cheat sheet - The <span class="highlight">Elixir</span> programming language</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    — reference: https://hexdocs.pm/<span class="highlight">elixir</span>/<span class="highlight">GenServer</span>.html initialization: .start ... <span class="highlight">GenServer</span>.stop(pid, reason, <span class="highlight">timeout</span>) end client. :ok returns def ...
+  </p></div>
+<div class="engines">
+<span>google cse</span><span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixir-lang.org/downloads/cheatsheets/gen-server.pdf" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="http://elixirforum.com/tags/genserver" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">http://elixirforum.com</span></span><span class="url_o2"><span class="url_i2"> › tags › genserver</span></span>  </div></a><h3><a href="http://elixirforum.com/tags/genserver" rel="noreferrer"><span class="highlight">genserver</span> tag | <span class="highlight">Elixir</span> Forum</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    <span class="highlight">genserver</span> tag on <span class="highlight">Elixir</span> Forum
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/http://elixirforum.com/tags/genserver" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14239478899" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://detail.chiebukuro.yahoo.co.jp</span></span><span class="url_o2"><span class="url_i2"> › qa › question_detail › q14239478899</span></span>  </div></a><h3><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14239478899" rel="noreferrer">エロ動画を見ていたらこんな警告が来ました、pornhubを見ていたの …</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Feb 26, 2021 · こんにちは。 それはマルウェア (ウイルス)感染を理由に利用者を騙す手口で「FakeAV (FakeAlert。フェイクアラー …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14239478899" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://elixir.hexdocs.pm/GenServer.html" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixir.hexdocs.pm</span></span><span class="url_o2"><span class="url_i2"> › GenServer.html</span></span>  </div></a><h3><a href="https://elixir.hexdocs.pm/GenServer.html" rel="noreferrer"><span class="highlight">GenServer</span> — <span class="highlight">Elixir</span> v1.20.5 - HexDocs</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    a <span class="highlight">timeout</span> value, where the supervisor will send the exit signal :shutdown and the <span class="highlight">GenServer</span> will have the duration of the <span class="highlight">timeout</span> to terminate. If after duration of this <span class="highlight">timeout</span> the process is still alive, it will be killed immediately.
+  </p></div>
+<div class="engines">
+<span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixir.hexdocs.pm/GenServer.html" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://elixir-lang.org/getting-started/mix-otp/genserver.html" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixir-lang.org</span></span><span class="url_o2"><span class="url_i2"> › getting-started › mix-otp › genserver.html</span></span>  </div></a><h3><a href="https://elixir-lang.org/getting-started/mix-otp/genserver.html" rel="noreferrer"><span class="highlight">GenServer</span> - The <span class="highlight">Elixir</span> programming language</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Since agents are processes, each bucket has a process identifier (pid), but buckets do not have a name. Back in the Process chapter , we have learned that…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixir-lang.org/getting-started/mix-otp/genserver.html" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://forums.commentcamarche.net/forum/affich-35774735-comment-transferer-les-enregistrements-du-televiseur-sur-un-ordinateur" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://forums.commentcamarche.net</span></span><span class="url_o2"><span class="url_i2"> › forum › affich-35774735-comment-transferer-les-enregistrements-du-televiseur-sur-un-ordinateur</span></span>  </div></a><h3><a href="https://forums.commentcamarche.net/forum/affich-35774735-comment-transferer-les-enregistrements-du-televiseur-sur-un-ordinateur" rel="noreferrer">Comment transférer les enregistrements du téléviseur sur un ordinateur</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Bonjour, je vais devoir changer mon décodeur et je perdrai ainsi tous mes enregistrements. Je voulais savoir s&#x27;il y avait un moyen de …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://forums.commentcamarche.net/forum/affich-35774735-comment-transferer-les-enregistrements-du-televiseur-sur-un-ordinateur" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://elixirstatus.com/p/dvfZR-managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixirstatus.com</span></span><span class="url_o2"><span class="url_i2"> › p › dvfZR-managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations</span></span>  </div></a><h3><a href="https://elixirstatus.com/p/dvfZR-managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations" rel="noreferrer">Managing Timeouts in <span class="highlight">GenServer</span> in <span class="highlight">Elixir</span>: How to Control Waiting Time ...</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    <span class="highlight">Elixir</span>&#x27;s <span class="highlight">GenServer</span> is a crucial component for building concurrent, fault-tolerant systems. GenServers allow you to create concurrent processes that can maintain internal state and respond to asynchronous messages. One of the most important and versatile options when working with GenServers is :<span class="highlight">timeout</span>.
+  </p></div>
+<div class="engines">
+<span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixirstatus.com/p/dvfZR-managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://dev.to/herminiotorres/managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations-25jc" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcR0jrBhESJJjmNG_kaPGAdPg5efHX_CcQsPxeYA0QdBiwZzxtYBKwivrGs&amp;h=4a521930c43cb32988e50ca8da38d6420d7a619a7456072ab1ce378e8c852649" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcR0jrBhESJJjmNG_kaPGAdPg5efHX_CcQsPxeYA0QdBiwZzxtYBKwivrGs&amp;h=4a521930c43cb32988e50ca8da38d6420d7a619a7456072ab1ce378e8c852649" alt="" loading="lazy"></a><div class="result_inner"><a href="https://dev.to/herminiotorres/managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations-25jc" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://dev.to</span></span><span class="url_o2"><span class="url_i2"> › herminiotorres › managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations-25jc</span></span>  </div></a><h3><a href="https://dev.to/herminiotorres/managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations-25jc" rel="noreferrer">Managing Timeouts in <span class="highlight">GenServer</span> in <span class="highlight">Elixir</span>: How to Control Waiting Time ...</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    The :<span class="highlight">timeout</span> option is used when starting a <span class="highlight">GenServer</span> in <span class="highlight">Elixir</span> to specify the maximum time a caller is willing to wait for a response from a <span class="highlight">GenServer</span> function. It defines a time limit for executing an operation within the <span class="highlight">GenServer</span>. If the <span class="highlight">GenServer</span> cannot complete the operation within the time specified by the :<span class="highlight">timeout</span> option, it returns an ...
+  </p></div>
+<div class="engines">
+<span>google cse</span><span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://dev.to/herminiotorres/managing-timeouts-in-genserver-in-elixir-how-to-control-waiting-time-in-critical-operations-25jc" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://elixirforum.com/t/genserver-timeout-how-do-i-handle-this/57137" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcR2U5UEz2V8hxpIt1FBJyw6dGqT0KdnLuF9GJxcVOP6G-Mjfib_bVs1iw&amp;h=4fe55cba5a22a8174d7eeaff51105dc54f6b7fb43316f5fd947859aa6c1d8bc7" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcR2U5UEz2V8hxpIt1FBJyw6dGqT0KdnLuF9GJxcVOP6G-Mjfib_bVs1iw&amp;h=4fe55cba5a22a8174d7eeaff51105dc54f6b7fb43316f5fd947859aa6c1d8bc7" alt="" loading="lazy"></a><div class="result_inner"><a href="https://elixirforum.com/t/genserver-timeout-how-do-i-handle-this/57137" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixirforum.com</span></span><span class="url_o2"><span class="url_i2"> › t › genserver-timeout-how-do-i-handle-this › 57137</span></span>  </div></a><h3><a href="https://elixirforum.com/t/genserver-timeout-how-do-i-handle-this/57137" rel="noreferrer"><span class="highlight">GenServer</span> <span class="highlight">timeout</span> - how do i handle this? - <span class="highlight">Elixir</span> Forum</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    One big issue: by default, <span class="highlight">GenServer</span>.call has a <span class="highlight">timeout</span> of 5 seconds. HTTPoison.get has a <span class="highlight">timeout</span> of 8 seconds. If a request to one of these services takes longer than 5 seconds, the Plug worker that sent the fetch request will time out and crash (your first example). But the fetcher will keep running. If a request to one of these services takes more than 8 seconds, HTTPoison.get will return ...
+  </p></div>
+<div class="engines">
+<span>google cse</span><span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixirforum.com/t/genserver-timeout-how-do-i-handle-this/57137" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://learn-elixir.dev/blogs/dangers-of-genservers" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcSxlREE7gLtx06MHNFgf0zxgFidhcoJsbHkiPvHdvkwteJmxE_oV8oQE3-N&amp;h=d1eff64972623a5e78f4750d69ece1ad532535991da524593c311d2aed99ebbe" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcSxlREE7gLtx06MHNFgf0zxgFidhcoJsbHkiPvHdvkwteJmxE_oV8oQE3-N&amp;h=d1eff64972623a5e78f4750d69ece1ad532535991da524593c311d2aed99ebbe" alt="" loading="lazy"></a><div class="result_inner"><a href="https://learn-elixir.dev/blogs/dangers-of-genservers" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://learn-elixir.dev</span></span><span class="url_o2"><span class="url_i2"> › blogs › dangers-of-genservers</span></span>  </div></a><h3><a href="https://learn-elixir.dev/blogs/dangers-of-genservers" rel="noreferrer">Dangers Of Genservers - Learn <span class="highlight">Elixir</span></a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Oct 29, 2018 ... By default GenServers have a <span class="highlight">timeout</span> of 5 seconds, after which your message will be dropped. This <span class="highlight">timeout</span> can be changed to any number you would ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://learn-elixir.dev/blogs/dangers-of-genservers" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://oneuptime.com/blog/post/2026-02-02-elixir-genserver-state/view" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcQpWy90HodjfWJEcnTH0eWNq6zi8MmHt03KHDP7hGHWx73ZZbFRXVuQkBAu&amp;h=97fcbdc4c495533a305d13c957cfe4d26ae8a09b34bf3f3f8fdd13a813e087ba" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcQpWy90HodjfWJEcnTH0eWNq6zi8MmHt03KHDP7hGHWx73ZZbFRXVuQkBAu&amp;h=97fcbdc4c495533a305d13c957cfe4d26ae8a09b34bf3f3f8fdd13a813e087ba" alt="" loading="lazy"></a><div class="result_inner"><a href="https://oneuptime.com/blog/post/2026-02-02-elixir-genserver-state/view" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://oneuptime.com</span></span><span class="url_o2"><span class="url_i2"> › blog › post › 2026-02-02-elixir-genserver-state › view</span></span>  </div></a><h3><a href="https://oneuptime.com/blog/post/2026-02-02-elixir-genserver-state/view" rel="noreferrer">How to Implement GenServers for State Management in <span class="highlight">Elixir</span></a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Feb 2, 2026 ... <span class="highlight">Elixir</span> Copy. defmodule CacheWithTimeout do use <span class="highlight">GenServer</span> @<span class="highlight">timeout</span> 60_000 # 60 seconds def start_link(opts \\ []) do <span class="highlight">GenServer</span>.start_link(__ ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://oneuptime.com/blog/post/2026-02-02-elixir-genserver-state/view" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="http://openmymind.net/Learning-Elixir-GenServer-Part-2/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">http://openmymind.net</span></span><span class="url_o2"><span class="url_i2"> › Learning-Elixir-GenServer-Part-2</span></span>  </div></a><h3><a href="http://openmymind.net/Learning-Elixir-GenServer-Part-2/" rel="noreferrer">Learning <span class="highlight">Elixir</span>&#x27;s <span class="highlight">GenServer</span> - Part 2</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Learning <span class="highlight">Elixir</span>&#x27;s <span class="highlight">GenServer</span> - Part 2 In Part 1, we introduced GenServers by looking at a simple example that exposed a shared id map (string to integer).…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/http://openmymind.net/Learning-Elixir-GenServer-Part-2/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://forums.commentcamarche.net/forum/affich-36953588-supprimer-compte-pornhub" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://forums.commentcamarche.net</span></span><span class="url_o2"><span class="url_i2"> › forum › affich-36953588-supprimer-compte-pornhub</span></span>  </div></a><h3><a href="https://forums.commentcamarche.net/forum/affich-36953588-supprimer-compte-pornhub" rel="noreferrer">Supprimer compte pornhub - Forum Réseaux sociaux</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Nov 20, 2020 · Bonjour, &quot;Pour supprimer votre compte, utilisez le menu déroulant en haut à droite de la page contenant votre photo …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://forums.commentcamarche.net/forum/affich-36953588-supprimer-compte-pornhub" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://hexdocs.pm/elixir/1.12/GenServer.html" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://hexdocs.pm</span></span><span class="url_o2"><span class="url_i2"> › elixir › 1.12 › GenServer.html</span></span>  </div></a><h3><a href="https://hexdocs.pm/elixir/1.12/GenServer.html" rel="noreferrer"><span class="highlight">GenServer</span> — <span class="highlight">Elixir</span> v1.12.3 - Hexdocs</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    <span class="highlight">timeout</span> is an integer greater than zero which specifies how many milliseconds to wait for a reply, or the atom :infinity to wait indefinitely. The default value ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://hexdocs.pm/elixir/1.12/GenServer.html" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://elixir.hexdocs.pm/main/GenServer.html" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixir.hexdocs.pm</span></span><span class="url_o2"><span class="url_i2"> › main › GenServer.html</span></span>  </div></a><h3><a href="https://elixir.hexdocs.pm/main/GenServer.html" rel="noreferrer"><span class="highlight">GenServer</span> — <span class="highlight">Elixir</span> v1.21.0-dev - HexDocs</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    a <span class="highlight">timeout</span> value, where the supervisor will send the exit signal :shutdown and the <span class="highlight">GenServer</span> will have the duration of the <span class="highlight">timeout</span> to terminate. If after duration of this <span class="highlight">timeout</span> the process is still alive, it will be killed immediately.
+  </p></div>
+<div class="engines">
+<span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixir.hexdocs.pm/main/GenServer.html" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://users.rust-lang.org/t/genserver-elixir-inspired-actors/79864" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://users.rust-lang.org</span></span><span class="url_o2"><span class="url_i2"> › t › genserver-elixir-inspired-actors › 79864</span></span>  </div></a><h3><a href="https://users.rust-lang.org/t/genserver-elixir-inspired-actors/79864" rel="noreferrer"><span class="highlight">Genserver</span>: <span class="highlight">Elixir</span>-inspired actors - announcements - The Rust Pro…</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    One of my favourite things about <span class="highlight">Elixir</span> is the <span class="highlight">GenServer</span> abstraction. If you&#x27;ve used <span class="highlight">Elixir</span> or Erlang before, you&#x27;re likely familiar with its concurrency…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://users.rust-lang.org/t/genserver-elixir-inspired-actors/79864" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://community.virginmedia.com/tag/Subtitle%20size?messages.widget.messagelistfornodebyrecentactivitywidget-tab-main-messages-list-for-tag-widget-0=mostKudoed" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://community.virginmedia.com</span></span><span class="url_o2"><span class="url_i2"> › tag › Subtitle size</span></span>  </div></a><h3><a href="https://community.virginmedia.com/tag/Subtitle%20size?messages.widget.messagelistfornodebyrecentactivitywidget-tab-main-messages-list-for-tag-widget-0=mostKudoed" rel="noreferrer">Tag:&quot;Subtitle size&quot; | Virgin Media Community</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    0 Topics Most Recent Most Viewed Most Likes No content to show
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://community.virginmedia.com/tag/Subtitle%20size?messages.widget.messagelistfornodebyrecentactivitywidget-tab-main-messages-list-for-tag-widget-0=mostKudoed" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://elixirforum.com/t/genserver-timeout/26142" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixirforum.com</span></span><span class="url_o2"><span class="url_i2"> › t › genserver-timeout › 26142</span></span>  </div></a><h3><a href="https://elixirforum.com/t/genserver-timeout/26142" rel="noreferrer"><span class="highlight">GenServer</span> <span class="highlight">timeout</span> | <span class="highlight">Elixir</span> Forum</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    I use <span class="highlight">GenServer</span> (restart: :temporary) for a module that manages some state and handles access to it. Its init function and its handle_* functions return the same <span class="highlight">timeout</span> value. The <span class="highlight">GenServer</span>-based state-managing processes get started by invoking <span class="highlight">GenServer</span>.start_link and a :via tuple for the name.
+  </p></div>
+<div class="engines">
+<span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixirforum.com/t/genserver-timeout/26142" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="http://stackoverflow.com/a/39769711" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">http://stackoverflow.com</span></span><span class="url_o2"><span class="url_i2"> › a › 39769711</span></span>  </div></a><h3><a href="http://stackoverflow.com/a/39769711" rel="noreferrer"><span class="highlight">elixir</span> - Graceful shutdown of <span class="highlight">GenServer</span> - Stack Overflow</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    I writing an <span class="highlight">Elixir</span> app with <span class="highlight">GenServer</span> that starts an external application on boot and shuts it down and does other clean-up on exit. I&#x27;ve added bootup f…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/http://stackoverflow.com/a/39769711" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q12282212327" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://detail.chiebukuro.yahoo.co.jp</span></span><span class="url_o2"><span class="url_i2"> › qa › question_detail › q12282212327</span></span>  </div></a><h3><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q12282212327" rel="noreferrer">FC2動画のアダルトを選ぶと危険なサイトですって警告がでるのです …</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Nov 28, 2016 · Aではありません。 理解できますか？ 以上はFC2に限った話ではなく、PornhubやXVIDEOS等の大手アダルトサイ …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q12282212327" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://codeberg.org/Fiq/jwstcli" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://codeberg.org</span></span><span class="url_o2"><span class="url_i2"> › Fiq › jwstcli</span></span>  </div></a><h3><a href="https://codeberg.org/Fiq/jwstcli" rel="noreferrer">Fiq/jwstcli: An <span class="highlight">Elixir</span> <span class="highlight">GenServer</span> with cli wrapper and downloader…</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Log Levels The app is currently VERY chatting. You may want to reduce the default log levels; this is on my TODO. In iex: iex&gt;Logger.configure(level::err…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://codeberg.org/Fiq/jwstcli" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q13225487133" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://detail.chiebukuro.yahoo.co.jp</span></span><span class="url_o2"><span class="url_i2"> › qa › question_detail › q13225487133</span></span>  </div></a><h3><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q13225487133" rel="noreferrer">Chromeキャストについて先日まではキャスト機能で、youtub.</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    May 23, 2020 · Chromeキャストについて 先日まではキャスト機能で、youtube.xvideo.pornhub等がテレビで見ることができてまし …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q13225487133" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://www.openmymind.net/Elixir-A-Little-Beyond-The-Basics-Part-8-genservers/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://www.openmymind.net</span></span><span class="url_o2"><span class="url_i2"> › Elixir-A-Little-Beyond-The-Basics-Part-8-genservers</span></span>  </div></a><h3><a href="https://www.openmymind.net/Elixir-A-Little-Beyond-The-Basics-Part-8-genservers/" rel="noreferrer"><span class="highlight">Elixir</span>, A Little Beyond The Basics - Part 8: genservers</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Oct 23, 2021 ... In our above snippet, replace the IO.puts(&quot;<span class="highlight">timeout</span>&quot;) with throw :<span class="highlight">timeout</span> and you get a sense for what the <span class="highlight">GenServer</span> will do. Messages sent to ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://www.openmymind.net/Elixir-A-Little-Beyond-The-Basics-Part-8-genservers/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="http://openmymind.net/Learning-Elixir-GenServer-Part-1/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">http://openmymind.net</span></span><span class="url_o2"><span class="url_i2"> › Learning-Elixir-GenServer-Part-1</span></span>  </div></a><h3><a href="http://openmymind.net/Learning-Elixir-GenServer-Part-1/" rel="noreferrer">Learning <span class="highlight">Elixir</span>&#x27;s <span class="highlight">GenServer</span> - Part 1</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Learning <span class="highlight">Elixir</span>&#x27;s <span class="highlight">GenServer</span> - Part 1 It won&#x27;t be long into your journey of learning <span class="highlight">Elixir</span> before you run into GenServers and its friends (Agents, GenEven…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/http://openmymind.net/Learning-Elixir-GenServer-Part-1/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q10228297730" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://detail.chiebukuro.yahoo.co.jp</span></span><span class="url_o2"><span class="url_i2"> › qa › question_detail › q10228297730</span></span>  </div></a><h3><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q10228297730" rel="noreferrer">至急願います。Pornhubにログインしようとすると、「この.</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Jul 12, 2020 · 404s - Pornhub 申し訳ありませんが、要求されたページはすべて凍結されており、見つかりません。 このメッセージ …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q10228297730" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://j3rn.com/posts/a-genserver-pitfall/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://j3rn.com</span></span><span class="url_o2"><span class="url_i2"> › posts › a-genserver-pitfall</span></span>  </div></a><h3><a href="https://j3rn.com/posts/a-genserver-pitfall/" rel="noreferrer">Avoiding a <span class="highlight">GenServer</span> Pitfall - J3RN&#x27;s Blog</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Nov 1, 2025 ... The default behavior of <span class="highlight">GenServer</span>.call is to time out after five seconds — though the <span class="highlight">timeout</span> can be set to any number of milliseconds or : ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://j3rn.com/posts/a-genserver-pitfall/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://elixirmerge.com/p/understanding-genserver-timeouts-in-elixir" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://elixirmerge.com</span></span><span class="url_o2"><span class="url_i2"> › p › understanding-genserver-timeouts-in-elixir</span></span>  </div></a><h3><a href="https://elixirmerge.com/p/understanding-genserver-timeouts-in-elixir" rel="noreferrer">Understanding <span class="highlight">GenServer</span> Timeouts in <span class="highlight">Elixir</span></a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Herminio Torres wrote an article about managing timeouts in <span class="highlight">GenServer</span> in <span class="highlight">Elixir</span>, highlighting the importance of using the :<span class="highlight">timeout</span> option to control waiting time in critical operations.
+  </p></div>
+<div class="engines">
+<span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://elixirmerge.com/p/understanding-genserver-timeouts-in-elixir" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://gist.github.com/Exef/4b0396b4fc0eca83c501c934c484785e" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://gist.github.com</span></span><span class="url_o2"><span class="url_i2"> › Exef › 4b0396b4fc0eca83c501c934c484785e</span></span>  </div></a><h3><a href="https://gist.github.com/Exef/4b0396b4fc0eca83c501c934c484785e" rel="noreferrer">Example implementation of <span class="highlight">Elixir</span> <span class="highlight">GenServer</span> and some nice comment…</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    You signed in with another tab or window. Reload to refresh your session.You signed out in another tab or window. Reload to refresh your session.You swit…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://gist.github.com/Exef/4b0396b4fc0eca83c501c934c484785e" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14296423324" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://detail.chiebukuro.yahoo.co.jp</span></span><span class="url_o2"><span class="url_i2"> › qa › question_detail › q14296423324</span></span>  </div></a><h3><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14296423324" rel="noreferrer">tktubeというサイトは危険ですか？カメラがハッキングされたり、 …</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Apr 12, 2024 · あと、ネット上には、Pornhubみたいな、もっとメジャーなアダルトサイトもあるのに、なぜそんな「無名のアダル …
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14296423324" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://www.reddit.com/r/elixir/comments/1734ksj/how_to_avoid_genserver_from_timing_out/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://www.reddit.com</span></span><span class="url_o2"><span class="url_i2"> › r › elixir › comments › 1734ksj › how_to_avoid_genserver_from_timing_out</span></span>  </div></a><h3><a href="https://www.reddit.com/r/elixir/comments/1734ksj/how_to_avoid_genserver_from_timing_out/" rel="noreferrer">How to avoid <span class="highlight">GenServer</span> from timing out? : r/<span class="highlight">elixir</span> - Reddit</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    This is fine in <span class="highlight">Elixir</span>, since the preemptive scheduler of the Erlang VM makes sure that nothing else except the calling process in the system gets blocked because of the waiting. If the default <span class="highlight">timeout</span> of 5 seconds isn&#x27;t enough, just increase the <span class="highlight">timeout</span>.
+  </p></div>
+<div class="engines">
+<span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://www.reddit.com/r/elixir/comments/1734ksj/how_to_avoid_genserver_from_timing_out/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://gist.github.com/t4sk/f84ae820b0f1a92a5c828baacbb95ce1" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://gist.github.com</span></span><span class="url_o2"><span class="url_i2"> › t4sk › f84ae820b0f1a92a5c828baacbb95ce1</span></span>  </div></a><h3><a href="https://gist.github.com/t4sk/f84ae820b0f1a92a5c828baacbb95ce1" rel="noreferrer">gen_tcp and <span class="highlight">GenServer</span> example in <span class="highlight">Elixir</span> (1.5.2) · GitHub</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    You signed in with another tab or window. Reload to refresh your session.You signed out in another tab or window. Reload to refresh your session.You swit…
+  </p></div>
+<div class="engines">
+<span>mwmbl</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://gist.github.com/t4sk/f84ae820b0f1a92a5c828baacbb95ce1" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14228337339" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://detail.chiebukuro.yahoo.co.jp</span></span><span class="url_o2"><span class="url_i2"> › qa › question_detail › q14228337339</span></span>  </div></a><h3><a href="https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14228337339" rel="noreferrer">みんな大好きなサイト「pornhub」の読み方を教えてください。</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Jul 13, 2020 · みんな大好きなサイト「pornhub」の読み方を教えてください。
+  </p></div>
+<div class="engines">
+<span>bing</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14228337339" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://stackoverflow.com/questions/55350694/genserver-timeout-handler-not-being-called" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://stackoverflow.com</span></span><span class="url_o2"><span class="url_i2"> › questions › 55350694 › genserver-timeout-handler-not-being-called</span></span>  </div></a><h3><a href="https://stackoverflow.com/questions/55350694/genserver-timeout-handler-not-being-called" rel="noreferrer"><span class="highlight">GenServer</span> <span class="highlight">timeout</span> handler not being called - Stack Overflow</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    I&#x27;ve got a pretty simple setup: one <span class="highlight">GenServer</span>, a sort of cache, which spawns child GenServers with a <span class="highlight">timeout</span>, which they handle by sending the parent a message about their inactivity. The child pa...
+  </p></div>
+<div class="engines">
+<span>duckduckgo</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://stackoverflow.com/questions/55350694/genserver-timeout-handler-not-being-called" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://www.freshcodeit.com/blog/youve-built-a-genserver-now-make-it-fast-observable-and-bulletproof" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://www.freshcodeit.com</span></span><span class="url_o2"><span class="url_i2"> › blog › youve-built-a-genserver-now-make-it-fast-observable-and-bulletproof</span></span>  </div></a><h3><a href="https://www.freshcodeit.com/blog/youve-built-a-genserver-now-make-it-fast-observable-and-bulletproof" rel="noreferrer">You&#x27;ve Built a <span class="highlight">GenServer</span>. Now Make It Fast, Observable and ...</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    May 7, 2026 ... ... <span class="highlight">GenServer</span> testing (run actual process for complex interactions like timeouts/retries) ... How to Design and Test <span class="highlight">Elixir</span> GenServers. 7 min read.
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://www.freshcodeit.com/blog/youve-built-a-genserver-now-make-it-fast-observable-and-bulletproof" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://samuelmullen.com/articles/elixir-processes-testing" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://samuelmullen.com</span></span><span class="url_o2"><span class="url_i2"> › articles › elixir-processes-testing</span></span>  </div></a><h3><a href="https://samuelmullen.com/articles/elixir-processes-testing" rel="noreferrer"><span class="highlight">Elixir</span> Processes: Testing - Samuel Mullen</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    It does this by sending the :list message to the handle_call/3 function. defmodule Listless do use <span class="highlight">GenServer</span> def start_link(_) do <span class="highlight">GenServer</span>. ... <span class="highlight">timeout</span> value (it ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://samuelmullen.com/articles/elixir-processes-testing" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><div class="result_inner"><a href="https://news.ycombinator.com/item?id=26958772" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://news.ycombinator.com</span></span><span class="url_o2"><span class="url_i2"> › item</span></span>  </div></a><h3><a href="https://news.ycombinator.com/item?id=26958772" rel="noreferrer"><span class="highlight">Elixir</span> <span class="highlight">GenServer</span> Explained | Hacker News</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Apr 27, 2021 ... ... <span class="highlight">timeout</span> so you have guaranteed delivery and acknowledgement, or crash the calling process. A lot of times people from other plarforms rush ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://news.ycombinator.com/item?id=26958772" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://medium.com/elemental-elixir/elixir-otp-basics-of-genserver-18ec78cc3148" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcQ82TxA9zJEl-HEkTZOiQcwhW0EbVy9J5gXYCMPiA__VzL_blto646-duxr&amp;h=bc153205b81bdc19e5426671edf4528ba08295bebd599875b073e19157db4793" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcQ82TxA9zJEl-HEkTZOiQcwhW0EbVy9J5gXYCMPiA__VzL_blto646-duxr&amp;h=bc153205b81bdc19e5426671edf4528ba08295bebd599875b073e19157db4793" alt="" loading="lazy"></a><div class="result_inner"><a href="https://medium.com/elemental-elixir/elixir-otp-basics-of-genserver-18ec78cc3148" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://medium.com</span></span><span class="url_o2"><span class="url_i2"> › elemental-elixir › elixir-otp-basics-of-genserver-18ec78cc3148</span></span>  </div></a><h3><a href="https://medium.com/elemental-elixir/elixir-otp-basics-of-genserver-18ec78cc3148" rel="noreferrer"><span class="highlight">Elixir</span>/OTP : Basics of <span class="highlight">GenServer</span> - Medium</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Feb 1, 2024 ... Since it is a synchronous call, this function call blocks the client process until the server replies with a result message or until the <span class="highlight">timeout</span> ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://medium.com/elemental-elixir/elixir-otp-basics-of-genserver-18ec78cc3148" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://allanmacgregor.com/posts/debugging-production-elixir-with-observer-and-recon" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcSJPXiNRhKyav43k5GeCWNtOu1DfeugwrjVH3r4oSSLlgsxqJy6OWe340w&amp;h=7a9cd4615d310995e0c81314bef08382f062d65d43d4236a20b8d9257665d8f1" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcSJPXiNRhKyav43k5GeCWNtOu1DfeugwrjVH3r4oSSLlgsxqJy6OWe340w&amp;h=7a9cd4615d310995e0c81314bef08382f062d65d43d4236a20b8d9257665d8f1" alt="" loading="lazy"></a><div class="result_inner"><a href="https://allanmacgregor.com/posts/debugging-production-elixir-with-observer-and-recon" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://allanmacgregor.com</span></span><span class="url_o2"><span class="url_i2"> › posts › debugging-production-elixir-with-observer-and-recon</span></span>  </div></a><h3><a href="https://allanmacgregor.com/posts/debugging-production-elixir-with-observer-and-recon" rel="noreferrer">Debugging Production <span class="highlight">Elixir</span> with Observer and Recon</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Feb 25, 2026 ... Two GenServers called each other synchronously. Under normal load, the calls completed fast enough that the default 5-second <span class="highlight">timeout</span> never ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://allanmacgregor.com/posts/debugging-production-elixir-with-observer-and-recon" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://blog.sequinstream.com/genserver-reply-dont-call-us-well-call-you/" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcRu8OVuRywropl0Yj8tD7egIydmHYiyAOuhpCTFG9SeBFh21ijJ7zIDzhI&amp;h=7c086b2149a6aacc64f26befe88111c0e0cb183e1cd8fe0d9422a2cde733d08b" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcRu8OVuRywropl0Yj8tD7egIydmHYiyAOuhpCTFG9SeBFh21ijJ7zIDzhI&amp;h=7c086b2149a6aacc64f26befe88111c0e0cb183e1cd8fe0d9422a2cde733d08b" alt="" loading="lazy"></a><div class="result_inner"><a href="https://blog.sequinstream.com/genserver-reply-dont-call-us-well-call-you/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://blog.sequinstream.com</span></span><span class="url_o2"><span class="url_i2"> › genserver-reply-dont-call-us-well-call-you</span></span>  </div></a><h3><a href="https://blog.sequinstream.com/genserver-reply-dont-call-us-well-call-you/" rel="noreferrer"><span class="highlight">GenServer</span>.reply: Don&#x27;t Call Us, We&#x27;ll Call You - Sequin Blog</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Aug 1, 2023 ... GenServers are one of the core abstractions provided by the OTP library that both Erlang and <span class="highlight">Elixir</span> share. A <span class="highlight">GenServer</span> (generic server) is a ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://blog.sequinstream.com/genserver-reply-dont-call-us-well-call-you/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://ieftimov.com/posts/otp-elixir-genserver-build-own-url-shortener/" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcT5L4ht3C42Amwye-tmFdrjxDcT94QP6l9O6MChGvXIcpLpHvVDkyTb8RM&amp;h=0bda16cb41d59c2ac4d14dafcd8ed8d417f9fabdbe624911a524f62fad76647a" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcT5L4ht3C42Amwye-tmFdrjxDcT94QP6l9O6MChGvXIcpLpHvVDkyTb8RM&amp;h=0bda16cb41d59c2ac4d14dafcd8ed8d417f9fabdbe624911a524f62fad76647a" alt="" loading="lazy"></a><div class="result_inner"><a href="https://ieftimov.com/posts/otp-elixir-genserver-build-own-url-shortener/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://ieftimov.com</span></span><span class="url_o2"><span class="url_i2"> › posts › otp-elixir-genserver-build-own-url-shortener</span></span>  </div></a><h3><a href="https://ieftimov.com/posts/otp-elixir-genserver-build-own-url-shortener/" rel="noreferrer">OTP in <span class="highlight">Elixir</span>: Learn <span class="highlight">GenServer</span> by Building Your Own URL Shortener</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Jan 26, 2019 ... This means that instead of identifying a <span class="highlight">GenServer</span> by PID , we can put a name on it. :<span class="highlight">timeout</span> - sets the server startup <span class="highlight">timeout</span> (in milliseconds) ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://ieftimov.com/posts/otp-elixir-genserver-build-own-url-shortener/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://www.jasontokoph.com/tidbits/minimal-periodic-task-runner-in-elixir/" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcSKdogjjrV1BonEUv1VPfSoVTpQ5VXeDVMq6t3iif4bHP_isZGSahaa5Yk6&amp;h=33dd0aa7d337c3dae6e56e16a8fb8386d27af3ad6ff8ba79452e8ef20e1f013b" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcSKdogjjrV1BonEUv1VPfSoVTpQ5VXeDVMq6t3iif4bHP_isZGSahaa5Yk6&amp;h=33dd0aa7d337c3dae6e56e16a8fb8386d27af3ad6ff8ba79452e8ef20e1f013b" alt="" loading="lazy"></a><div class="result_inner"><a href="https://www.jasontokoph.com/tidbits/minimal-periodic-task-runner-in-elixir/" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://www.jasontokoph.com</span></span><span class="url_o2"><span class="url_i2"> › tidbits › minimal-periodic-task-runner-in-elixir</span></span>  </div></a><h3><a href="https://www.jasontokoph.com/tidbits/minimal-periodic-task-runner-in-elixir/" rel="noreferrer">Minimal Periodic Task Runner in <span class="highlight">Elixir</span> - Jason Tokoph</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Nov 18, 2025 ... Now the <span class="highlight">GenServer</span> will receive :<span class="highlight">timeout</span> again after each run, which effectively triggers handle_info(:<span class="highlight">timeout</span>, state) on the configured interval ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://www.jasontokoph.com/tidbits/minimal-periodic-task-runner-in-elixir/" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://potatosalad.io/2017/10/13/time-out-elixir-state-machines-versus-servers" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcS5P78EnILONXXLKdU22AguIA3PkIC4kyysGFTPpsJO5o_7s5YHngxu8ly3&amp;h=5513eeb547c21b2bdc5d3daf7498f0cbe5e751d41bc1348c7baf661708b9b7bf" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcS5P78EnILONXXLKdU22AguIA3PkIC4kyysGFTPpsJO5o_7s5YHngxu8ly3&amp;h=5513eeb547c21b2bdc5d3daf7498f0cbe5e751d41bc1348c7baf661708b9b7bf" alt="" loading="lazy"></a><div class="result_inner"><a href="https://potatosalad.io/2017/10/13/time-out-elixir-state-machines-versus-servers" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://potatosalad.io</span></span><span class="url_o2"><span class="url_i2"> › 2017 › 10 › 13 › time-out-elixir-state-machines-versus-servers</span></span>  </div></a><h3><a href="https://potatosalad.io/2017/10/13/time-out-elixir-state-machines-versus-servers" rel="noreferrer">Time-Out: <span class="highlight">Elixir</span> State Machines versus Servers - potatosalad.io</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    Oct 12, 2017 ... TL;DR Try using gen_statem instead of gen_server (especially if you plan on using :erlang.start_timer/3 ). You may find it&#x27;s a better fit than ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://potatosalad.io/2017/10/13/time-out-elixir-state-machines-versus-servers" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://www.educative.io/answers/what-is-handleinfo-in-elixir" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcQ2Kkmlxolzi094ccW5j4UJhqefhn0TQMp7Zb05y0UdIMLo6j_cW3iPd1d7&amp;h=071e74ca43bfc38d4ae05cb5146c0833befddb7d7158cd26950aaba66a89226b" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcQ2Kkmlxolzi094ccW5j4UJhqefhn0TQMp7Zb05y0UdIMLo6j_cW3iPd1d7&amp;h=071e74ca43bfc38d4ae05cb5146c0833befddb7d7158cd26950aaba66a89226b" alt="" loading="lazy"></a><div class="result_inner"><a href="https://www.educative.io/answers/what-is-handleinfo-in-elixir" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://www.educative.io</span></span><span class="url_o2"><span class="url_i2"> › answers › what-is-handleinfo-in-elixir</span></span>  </div></a><h3><a href="https://www.educative.io/answers/what-is-handleinfo-in-elixir" rel="noreferrer">What is handle_info in <span class="highlight">Elixir</span>? - Educative.io</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    ... <span class="highlight">Elixir</span>, we can use a generic server process, <span class="highlight">GenServer</span>. Not only can it fit ... The message is <span class="highlight">timeout</span> whenever a <span class="highlight">timeout</span> occurs. Error: Code Widget ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://www.educative.io/answers/what-is-handleinfo-in-elixir" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>
+<article class="result result-default category-general"><a href="https://exercism.org/tracks/elixir/concepts/genserver" class="thumbnail_link" rel="noreferrer"><img class="thumbnail_bg" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcT_iE8YOKzkUq5u3ncWLepkthHgwEKHbmb9HdV4JlK3oW3Y2B-ECxE3s8E&amp;h=88ab70887489ef3afef4737aa65e19287aa569bdceffc4c4c35ba78d61c33ff1" alt="" aria-hidden="true"><img class="thumbnail" src="/image?url=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%253AANd9GcT_iE8YOKzkUq5u3ncWLepkthHgwEKHbmb9HdV4JlK3oW3Y2B-ECxE3s8E&amp;h=88ab70887489ef3afef4737aa65e19287aa569bdceffc4c4c35ba78d61c33ff1" alt="" loading="lazy"></a><div class="result_inner"><a href="https://exercism.org/tracks/elixir/concepts/genserver" class="url_header" rel="noreferrer"><div class="url_wrapper"><span class="url_o1"><span class="url_i1">https://exercism.org</span></span><span class="url_o2"><span class="url_i2"> › tracks › elixir › concepts › genserver</span></span>  </div></a><h3><a href="https://exercism.org/tracks/elixir/concepts/genserver" rel="noreferrer"><span class="highlight">GenServer</span> in <span class="highlight">Elixir</span> on Exercism</a></h3><!-- Length is displayed inside the thumbnail if there's any, so don't display it here a second time -->  <p class="content">
+    <span class="highlight">GenServer</span> (generic server) is a behaviour that abstracts common client-server interactions between <span class="highlight">Elixir</span> processes. Remember the receive loop from when we ...
+  </p></div>
+<div class="engines">
+<span>google cse</span>  <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><circle cx="256" cy="256" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="416" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/><circle cx="256" cy="96" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32px"/></svg><a href="https://web.archive.org/web/https://exercism.org/tracks/elixir/concepts/genserver" class="cache_link" rel="noreferrer">cached</a>
+</div><div class="break"></div></article>    </div>
+    <div id="backToTop">
+      <a href="#" aria-label="Back to top"><svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><path d="m112 328 144-144 144 144" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48px"/></svg></a>
+    </div>
+    <nav id="pagination" role="navigation">
+<form method="GET" action="/search" class="next_page">
+              <div class="right">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="2" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+<button role="link"  type="submit">Next page <svg viewBox="0 0 512 512" class="ionicon sxng-icon-set-small" aria-hidden="true"><path d="m184 112 144 144-144 144" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48px"/></svg></button>
+              </div>
+          </form>
+        <div class="numbered_pagination">
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="1" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number_current" type="button" value="1">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="2" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="2">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="3" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="3">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="4" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="4">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="5" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="5">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="6" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="6">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="7" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="7">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="8" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="8">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="9" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="9">
+            </form>
+            <form method="GET" action="/search" class="page_number">
+                <input type="hidden" name="q" value="elixir genserver timeout" >
+                <input type="hidden" name="category_general" value="1" >
+                <input type="hidden" name="pageno" value="10" >
+                <input type="hidden" name="language" value="auto" >
+                <input type="hidden" name="time_range" value="" >
+                <input type="hidden" name="safesearch" value="0" >
+                <input type="hidden" name="theme" value="simple" >
+                <input role="link" class="page_number" type="submit" value="10">
+            </form>
+        </div>
+    </nav>
+</div>
+  </main>
+  <footer>
+    <p>
+    Powered by <a href="/info/en/about">SearXNG</a> - 2026.11.8+3a3dd15bf — a privacy-respecting, open metasearch engine<br>
+        <a href="https://github.com/searxng/searxng">Source code</a>
+        | <a href="https://github.com/searxng/searxng/issues">Issue tracker</a>
+| <a href="/stats">Engine stats</a>        | <a href="https://searx.space">Public instances</a>
+        | <a href="https://help.shrt.win/">Contact instance maintainer</a>
+    </p>
+  </footer>
+</body>
+</html>

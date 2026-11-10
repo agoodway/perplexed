@@ -13,7 +13,7 @@ defmodule Perplexed.Scraper.Http do
   # converter that raises or exits is the `:conversion_failed` outcome, so the
   # ladder can try the next scraper.
 
-  alias Perplexed.{Document, PdfConverter, Scraper, UrlGuard}
+  alias Perplexed.{Clock, Document, PdfConverter, Scraper, UrlGuard}
 
   @timeout_ms 15_000
   @max_size_bytes 25 * 1024 * 1024
@@ -118,7 +118,7 @@ defmodule Perplexed.Scraper.Http do
 
       cond do
         byte_size(body) > @max_size_bytes -> halt(request, response, :too_large)
-        past?(deadline) -> halt(request, response, :deadline)
+        Clock.past?(deadline) -> halt(request, response, :deadline)
         true -> {:cont, {request, %{response | body: body}}}
       end
     end
@@ -129,9 +129,6 @@ defmodule Perplexed.Scraper.Http do
 
   defp halt(request, response, reason),
     do: {:halt, {request, Req.Response.put_private(%{response | body: ""}, :stopped, reason)}}
-
-  defp past?(nil), do: false
-  defp past?(deadline), do: System.monotonic_time(:millisecond) >= deadline
 
   defp fetched({:ok, %Req.Response{status: status} = response}, _url) when status in 300..399,
     do: response |> Req.Response.get_header("location") |> redirect()

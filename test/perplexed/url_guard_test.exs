@@ -1,7 +1,7 @@
 defmodule Perplexed.UrlGuardTest do
   use ExUnit.Case, async: true
 
-  alias Perplexed.UrlGuard
+  alias Perplexed.{Fixtures, UrlGuard}
 
   describe "validate/1" do
     test "allows a public address" do
@@ -168,7 +168,7 @@ defmodule Perplexed.UrlGuardTest do
     end
 
     test "a per-call validator replaces the built-in check" do
-      opts = [url_validator: {Perplexed.Fixtures, :allow_url, []}]
+      opts = [url_validator: {Fixtures, :allow_url, []}]
       assert UrlGuard.check("http://127.0.0.1/", opts) == {:ok, "http://127.0.0.1/"}
     end
   end

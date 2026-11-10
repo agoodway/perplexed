@@ -29,6 +29,40 @@ defmodule Perplexed.HttpTest do
 
   defp json(status, payload), do: Fixtures.json_plug(self(), status, payload)
 
+  describe "retry_after_ms/1" do
+    test "reads Retry-After seconds and dates, and RateLimit-Reset headers" do
+      response = fn status, headers ->
+        %Req.Response{status: status, headers: Map.new(headers, fn {k, v} -> {k, [v]} end)}
+      end
+
+      in_a_minute =
+        DateTime.utc_now() |> DateTime.add(60) |> Calendar.strftime("%a, %d %b %Y %H:%M:%S GMT")
+
+      assert Http.retry_after_ms(response.(429, [{"retry-after", "30"}])) == 30_000
+
+      assert Http.retry_after_ms(response.(503, [{"retry-after", in_a_minute}])) in 58_000..60_000
+
+      assert Http.retry_after_ms(response.(429, [{"ratelimit-reset", "12"}])) == 12_000
+
+      reset_at = System.os_time(:second) + 45
+
+      assert Http.retry_after_ms(response.(429, [{"x-ratelimit-reset", "#{reset_at}"}])) in 44_000..45_000
+
+      assert Http.retry_after_ms(response.(429, [])) == nil
+      assert Http.retry_after_ms(response.(429, [{"retry-after", "soon"}])) == nil
+      assert Http.retry_after_ms(response.(200, [{"retry-after", "30"}])) == nil
+    end
+
+    test "a 429 error says how long the provider asked us to wait", %{provider: provider} do
+      plug = fn conn ->
+        conn |> Plug.Conn.put_resp_header("retry-after", "30") |> Plug.Conn.send_resp(429, "{}")
+      end
+
+      assert {:error, {:rate_limited, %{retry_after_ms: 30_000}}} =
+               post(provider, plug, retry: false)
+    end
+  end
+
   describe "post_json/5 status classification" do
     test "returns a 2xx response", %{provider: provider} do
       assert {:ok, %Req.Response{status: 200, body: %{"ok" => true}}} =

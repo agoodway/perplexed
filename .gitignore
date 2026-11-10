@@ -15,3 +15,11 @@ openspec
 .playwright-mcp
 .superpowers
 .DS_Store
+
+# Local experiment questions (dev/experiments/queries.example.exs shows the shape)
+/dev/experiments/queries.exs
+
+# Local secrets for experiments
+.env
+.env.*
+!.env.example

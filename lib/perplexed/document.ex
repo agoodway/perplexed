@@ -10,6 +10,8 @@ defmodule Perplexed.Document do
   the free direct and impersonated rungs).
   """
 
+  alias Perplexed.Verdict
+
   defstruct [
     :url,
     :final_url,
@@ -22,7 +24,7 @@ defmodule Perplexed.Document do
   ]
 
   @type tier :: atom()
-  @type outcome :: Perplexed.Verdict.t() | atom()
+  @type outcome :: Verdict.t() | atom()
 
   @type t :: %__MODULE__{
           url: String.t(),

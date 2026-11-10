@@ -9,7 +9,15 @@ defmodule Perplexed.Search.Hit do
   the search ran with `scrape: true` and the page was readable; otherwise
   `scrape_error` says why it was not (for example
   `{:unreadable, %{attempts: [direct: :blocked, impersonated: :blocked], cost: 0.0}}`).
+  `engines` names the upstream engines that returned the page, for
+  metasearch providers such as `Perplexed.Search.SearXNG`; other providers
+  leave it empty. `metadata` holds what else the provider said about the
+  result, such as DeepSeek's `rerank_score`, `authority`, `snippet` and
+  `site_name`; `Perplexed.answer/2` shows the ranking step the ones it
+  knows (see `Perplexed.Pipeline`).
   """
+
+  alias Perplexed.Document
 
   defstruct [
     :url,
@@ -19,7 +27,9 @@ defmodule Perplexed.Search.Hit do
     :published_at,
     :provider,
     :document,
-    :scrape_error
+    :scrape_error,
+    engines: [],
+    metadata: %{}
   ]
 
   @type t :: %__MODULE__{
@@ -29,7 +39,9 @@ defmodule Perplexed.Search.Hit do
           content: String.t() | nil,
           published_at: String.t() | nil,
           provider: atom(),
-          document: Perplexed.Document.t() | nil,
-          scrape_error: term()
+          document: Document.t() | nil,
+          scrape_error: term(),
+          engines: [String.t()],
+          metadata: map()
         }
 end

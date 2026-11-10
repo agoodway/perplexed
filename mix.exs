@@ -1,7 +1,7 @@
 defmodule Perplexed.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.2.0"
   @source_url "https://github.com/agoodway/perplexed"
 
   def project do
@@ -40,6 +40,7 @@ defmodule Perplexed.MixProject do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:dev), do: ["lib", "dev"]
   defp elixirc_paths(_), do: ["lib"]
 
   defp deps do
@@ -56,10 +57,13 @@ defmodule Perplexed.MixProject do
       {:req_llm, "~> 1.28"},
       {:zoi, "~> 0.18.11"},
 
-      # Test: Req's `plug:` option stands in for the network
-      {:plug, "~> 1.20", only: :test},
+      # Test: Req's `plug:` option stands in for the network (dev: Tidewave's plug)
+      {:plug, "~> 1.20", only: [:dev, :test]},
 
       # Dev/Test
+      # Runtime MCP for coding agents: `mix tidewave` serves http://localhost:4000/tidewave/mcp
+      {:tidewave, "~> 0.9.2", only: :dev},
+      {:bandit, "~> 1.14", only: :dev},
       {:ex_doc, "~> 0.40.4", only: :dev, runtime: false},
       {:credo, "~> 1.7.19", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4.8", only: [:dev, :test], runtime: false},

@@ -21,11 +21,16 @@ defmodule Perplexed.Scraper.BrowserRun do
 
   @base_url "https://api.cloudflare.com/client/v4/accounts"
   @timeout_ms 60_000
-  # $0.09 per browser hour past the included 10 hours.
+  # $0.09 per browser hour past the 10 included a month on Workers Paid, as
+  # of 2026-11-10 (developers.cloudflare.com/browser-rendering/pricing).
   @usd_per_browser_ms 0.09 / 3_600_000
 
   @impl true
   def cost(%Document{browser_ms: ms}, _opts), do: ms * @usd_per_browser_ms
+
+  @impl true
+  def configured?(opts),
+    do: Config.credentials?([:cloudflare_account_id, :cloudflare_api_token], :browser_run, opts)
 
   @impl true
   def scrape(url, opts) when is_present(url) do

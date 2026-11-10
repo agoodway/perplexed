@@ -4,9 +4,16 @@ defmodule Perplexed.Fixtures do
   it moves with the library.
   """
 
+  import ExUnit.Callbacks, only: [on_exit: 1, start_supervised!: 1]
+
+  alias Perplexed.Config
+  alias Perplexed.Search.SearXNG.Pool
   alias ReqLLM.{Context, Response}
 
   @readable String.duplicate("The museum opens at nine and closes at five on weekdays. ", 12)
+
+  @doc "Readable Markdown, as a hosted scraper returns it."
+  def readable_markdown, do: "# Visiting\n\n" <> @readable
 
   @doc "Page text long enough for `Perplexed.Verdict` to call readable."
   def readable_text, do: @readable
@@ -43,9 +50,59 @@ defmodule Perplexed.Fixtures do
 
   @doc "Overrides Perplexed settings for one test; returns the function that restores them."
   def put_config(settings) do
-    previous = Perplexed.Config.all()
-    Perplexed.Config.put(Keyword.merge(previous, settings))
-    fn -> Perplexed.Config.put(previous) end
+    previous = Config.all()
+    Config.put(Keyword.merge(previous, settings))
+    fn -> Config.put(previous) end
+  end
+
+  @doc """
+  Starts a `Perplexed.Search.SearXNG.Pool` for the test under a fresh name
+  and returns that name. `opts` go to the pool.
+  """
+  def start_pool(opts \\ []) do
+    name = :"pool_#{System.unique_integer([:positive])}"
+
+    {Pool, Keyword.put(opts, :name, name)}
+    |> Supervisor.child_spec(id: name)
+    |> start_supervised!()
+
+    name
+  end
+
+  @doc "One leased SearXNG search on `pool` with `outcome`, taking `ms`."
+  def measure(instance, outcome, ms, pool) do
+    [lease] = Pool.checkout([instance], 1, pool: pool)
+    Pool.record(lease, outcome, ms, pool: pool)
+  end
+
+  @doc """
+  Forwards `events` to the test process as
+  `{:telemetry, event, measurements, metadata}` until the test ends.
+  Handlers are global, so a test running at the same time can raise the
+  same events: match on something unique to the test (its own instance URL
+  or provider), not just the event.
+  """
+  def capture_telemetry(events) do
+    handler = "fixtures-#{System.unique_integer([:positive])}"
+    :telemetry.attach_many(handler, events, &__MODULE__.forward_telemetry/4, %{pid: self()})
+    on_exit(fn -> :telemetry.detach(handler) end)
+  end
+
+  @doc false
+  def forward_telemetry(event, measurements, metadata, %{pid: pid}),
+    do: send(pid, {:telemetry, event, measurements, metadata})
+
+  @doc """
+  A Req plug that answers by host: `routes` maps a host to a function of the
+  conn. Every request is reported to `test_pid` as
+  `{:request, host, path, query_params}`.
+  """
+  def router(test_pid, routes) do
+    fn conn ->
+      conn = Plug.Conn.fetch_query_params(conn)
+      send(test_pid, {:request, conn.host, conn.request_path, conn.query_params})
+      Map.fetch!(routes, conn.host).(conn)
+    end
   end
 
   @doc "A model response with plain text and no tool calls."
@@ -125,9 +182,11 @@ defmodule Perplexed.Fixtures.PdfConverter do
   @moduledoc "PDF converter stub that returns readable text for any PDF."
   @behaviour Perplexed.PdfConverter
 
+  alias Perplexed.Fixtures
+
   @impl true
   def convert(_binary, filename),
-    do: {:ok, "# #{filename}\n\n" <> Perplexed.Fixtures.readable_text()}
+    do: {:ok, "# #{filename}\n\n" <> Fixtures.readable_text()}
 end
 
 defmodule Perplexed.Fixtures.RaisingPdfConverter do

@@ -3,11 +3,14 @@ defmodule Perplexed.Scrape do
   Scrapes a URL to Markdown by climbing a ladder of `Perplexed.Scraper`s,
   cheapest first.
 
-  The default ladder is `[:direct, :impersonated, :firecrawl]`: plain HTTP,
-  then a browser TLS fingerprint, both free, then Firecrawl's hosted scraper,
-  which renders JavaScript and gets past most bot challenges. Swap any rung
-  for another scraper, for example `[:direct, :impersonated, :browser_run]`,
-  or for your own module implementing `Perplexed.Scraper`.
+  The default ladder is `[:direct, :impersonated, :deepseek, :firecrawl]`:
+  plain HTTP, then a browser TLS fingerprint, both free, then the hosted
+  scrapers cheapest first, DeepSeek Fetch and then Firecrawl, which renders
+  JavaScript and gets past most bot challenges. A hosted rung is left out
+  when its key is not set, so with no keys the default is the two free
+  rungs. Swap any rung for another scraper, for example
+  `[:direct, :impersonated, :browser_run]`, or for your own module
+  implementing `Perplexed.Scraper`.
 
   The URL is checked by `Perplexed.UrlGuard` once, before any rung, so a
   private address never reaches a hosted scraper either. Each rung's text is
@@ -15,7 +18,10 @@ defmodule Perplexed.Scrape do
   `c:Perplexed.Scraper.retries?/1` says they cannot help with that outcome;
   impersonation, for one, does nothing for a JavaScript shell. A missing
   page, a redirect into a private network, a scanned PDF needing OCR, an
-  encrypted PDF, an unsupported file type or an oversized body ends the climb.
+  encrypted PDF or an oversized body ends the climb. A file type no earlier
+  rung could convert (`:unsupported`, such as a PDF with no
+  `Perplexed.PdfConverter` configured) goes on only to rungs that read such
+  files, which for Firecrawl means `firecrawl_pdf: true`.
 
   A scrape has one deadline (`:timeout`). Each rung gets only the time left,
   and once it has passed the next rung is recorded as `:deadline` and the
@@ -25,15 +31,16 @@ defmodule Perplexed.Scrape do
 
   import Perplexed.Guards, only: [is_present: 1]
 
-  alias Perplexed.{Config, Document, Scraper, Telemetry, UrlGuard, Verdict}
+  alias Perplexed.{Clock, Config, Document, Scraper, TaskSupervisor, Telemetry, UrlGuard, Verdict}
 
-  @default_ladder [:direct, :impersonated, :firecrawl]
-  # Outcomes no later rung can fix.
+  # Cheapest first: the free tiers, then each paid one whose key is set.
+  @default_ladder [:direct, :impersonated, :deepseek, :firecrawl]
+  # Outcomes no later rung can fix. (`:unsupported` goes on only to rungs
+  # that read such files; see `Scraper.retries?/2`.)
   @terminal_outcomes [
     :not_found,
     :needs_ocr,
     :encrypted,
-    :unsupported,
     :too_large,
     :private_address,
     :invalid_url,
@@ -75,12 +82,12 @@ defmodule Perplexed.Scrape do
   def run(url, opts \\ [])
 
   def run(url, opts) when is_present(url) and is_list(opts) do
-    {ladder, opts} = Keyword.pop_lazy(opts, :ladder, &default_ladder/0)
+    {ladder, opts} = Keyword.pop_lazy(opts, :ladder, fn -> default_ladder(opts) end)
     {timeout, opts} = Keyword.pop(opts, :timeout, @timeout_ms)
 
     with {:ok, url} <- url |> UrlGuard.check(opts) |> guarded(url),
          {:ok, rungs} <- rungs(ladder) do
-      opts = Keyword.put(opts, :deadline, System.monotonic_time(:millisecond) + timeout)
+      opts = Keyword.put(opts, :deadline, Clock.deadline(timeout))
 
       Telemetry.span([:scrape], %{url: url}, fn ->
         url |> climb(rungs, {[], 0.0}, opts) |> span_stop()
@@ -109,7 +116,7 @@ defmodule Perplexed.Scrape do
   """
   @spec batch([String.t()], keyword()) :: [{String.t(), result()}]
   def batch(urls, opts \\ []) when is_list(urls) and is_list(opts) do
-    {supervisor, opts} = Keyword.pop(opts, :task_supervisor, Perplexed.TaskSupervisor)
+    {supervisor, opts} = Keyword.pop(opts, :task_supervisor, TaskSupervisor)
     {max_concurrency, opts} = Keyword.pop(opts, :max_concurrency, @batch_concurrency)
     timeout = Keyword.get(opts, :timeout, @timeout_ms)
 
@@ -125,10 +132,18 @@ defmodule Perplexed.Scrape do
 
   @doc """
   The ladder `run/2` uses when none is given: `config :perplexed, ladder:`,
-  else `#{inspect(@default_ladder)}`.
+  else `#{inspect(@default_ladder)}`, cheapest first, without the paid
+  rungs whose keys are not set in the settings or in `opts[:credentials]`
+  (so with no keys it is the two free ones).
   """
-  @spec default_ladder() :: [Scraper.spec()]
-  def default_ladder, do: Config.get(:ladder, @default_ladder)
+  @spec default_ladder(keyword()) :: [Scraper.spec()]
+  def default_ladder(opts \\ []),
+    do: Config.get(:ladder) || Enum.filter(@default_ladder, &configured?(&1, opts))
+
+  defp configured?(name, opts), do: name |> Scraper.resolve() |> resolved_configured?(opts)
+
+  defp resolved_configured?({:ok, rung}, opts), do: Scraper.configured?(rung, opts)
+  defp resolved_configured?({:error, _unknown}, _opts), do: false
 
   @doc "USD cost of a scrape result, whether it succeeded or every rung failed."
   @spec cost(result()) :: float()
@@ -195,15 +210,35 @@ defmodule Perplexed.Scrape do
   defp climbed({:error, outcome, cost}, url, {name, _, _}, rest, {attempts, spent}, opts),
     do: climb(url, escalate(rest, outcome), {[{name, outcome} | attempts], spent + cost}, opts)
 
-  defp past?(opts), do: System.monotonic_time(:millisecond) >= Keyword.fetch!(opts, :deadline)
+  defp past?(opts), do: opts |> Keyword.fetch!(:deadline) |> Clock.past?()
 
   defp unreadable(attempts, spent),
     do: {:error, {:unreadable, %{attempts: Enum.reverse(attempts), cost: spent * 1.0}}}
 
   # `{:ok, document, cost}` or `{:error, outcome, cost}`: a rung that answered
   # costs what its scraper charges even when the page then fails the check.
-  defp attempt({_name, module, scraper_opts} = rung, url, opts),
-    do: url |> module.scrape(Keyword.merge(opts, scraper_opts)) |> scraped(rung)
+  defp attempt({name, module, scraper_opts} = rung, url, opts) do
+    {attempted, ms} =
+      Clock.timed(fn ->
+        url |> module.scrape(Keyword.merge(opts, scraper_opts)) |> scraped(rung)
+      end)
+
+    emit_attempt(attempted, url, name, ms)
+    attempted
+  end
+
+  defp emit_attempt(attempted, url, tier, duration),
+    do:
+      Telemetry.attempt(:scrape, duration, attempt_cost(attempted), %{
+        url: url,
+        tier: tier,
+        outcome: attempt_outcome(attempted)
+      })
+
+  defp attempt_cost({_status, _document_or_outcome, cost}), do: cost
+
+  defp attempt_outcome({:ok, _document, _cost}), do: :ok
+  defp attempt_outcome({:error, outcome, _cost}), do: outcome
 
   defp scraped({:ok, %Document{markdown: markdown} = document, raw}, rung),
     do: markdown |> Verdict.judge(raw) |> judged(document, Scraper.cost(rung, document))

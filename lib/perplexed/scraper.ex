@@ -15,13 +15,14 @@ defmodule Perplexed.Scraper do
   | `:impersonated` | `Perplexed.Scraper.Impersonated` |
   | `:browser_run`  | `Perplexed.Scraper.BrowserRun`   |
   | `:firecrawl`    | `Perplexed.Scraper.Firecrawl`    |
+  | `:deepseek`     | `Perplexed.Scraper.DeepSeek`     |
 
   Any module implementing this behaviour can stand in a ladder too, as
   `Module` or `{Module, opts}`.
   """
 
-  alias Perplexed.{Adapter, Document}
-  alias Perplexed.Scraper.{BrowserRun, Direct, Firecrawl, Impersonated}
+  alias Perplexed.{Adapter, Clock, Document}
+  alias Perplexed.Scraper.{BrowserRun, DeepSeek, Direct, Firecrawl, Impersonated}
 
   @type result :: {:ok, Document.t(), raw_html :: String.t() | nil} | {:error, atom()}
   @type spec :: atom() | module() | {module(), keyword()}
@@ -41,13 +42,21 @@ defmodule Perplexed.Scraper do
   """
   @callback cost(Document.t(), keyword()) :: float()
 
-  @optional_callbacks retries?: 1, cost: 2
+  @doc """
+  Whether the scraper can run with `opts` and the current settings, such as
+  a paid one whose API key is set. Optional; defaults to true. The default
+  ladder leaves out built-in rungs that are not configured.
+  """
+  @callback configured?(keyword()) :: boolean()
+
+  @optional_callbacks retries?: 1, cost: 2, configured?: 1
 
   @builtin %{
     direct: Direct,
     impersonated: Impersonated,
     browser_run: BrowserRun,
-    firecrawl: Firecrawl
+    firecrawl: Firecrawl,
+    deepseek: DeepSeek
   }
 
   @names Map.new(@builtin, fn {name, module} -> {module, name} end)
@@ -86,12 +95,26 @@ defmodule Perplexed.Scraper do
   defp time_left_until(nil, default), do: default
 
   defp time_left_until(deadline, default),
-    do: (deadline - System.monotonic_time(:millisecond)) |> min(default) |> max(1)
+    do: deadline |> Clock.left_ms() |> min(default) |> max(1)
 
-  @doc "Whether the rung's scraper should be tried after an earlier tier failed with `outcome`."
+  @doc """
+  Whether the rung's scraper should be tried after an earlier tier failed
+  with `outcome`. A scraper without `c:retries?/1` is tried after anything
+  except `:unsupported` (a file type such as a PDF no earlier tier could
+  convert), which only a scraper that says it reads such files is tried
+  after.
+  """
   @spec retries?(rung(), atom()) :: boolean()
   def retries?({_name, module, _opts}, outcome),
-    do: Adapter.optional(module, :retries?, [outcome], true)
+    do: Adapter.optional(module, :retries?, [outcome], outcome != :unsupported)
+
+  @doc """
+  Whether the rung's scraper can run with the call's `opts` (see
+  `c:configured?/1`), such as per-call `credentials:`.
+  """
+  @spec configured?(rung(), keyword()) :: boolean()
+  def configured?({_name, module, rung_opts}, opts \\ []),
+    do: Adapter.optional(module, :configured?, [Keyword.merge(opts, rung_opts)], true)
 
   @doc "USD cost of `document` produced by the rung."
   @spec cost(rung(), Document.t()) :: float()

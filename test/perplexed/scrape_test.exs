@@ -234,8 +234,75 @@ defmodule Perplexed.ScrapeTest do
                Scrape.run(@url, ladder: [{PaidScraper, reply: ok_reply()}])
     end
 
-    test "defaults to free tiers first, then Firecrawl" do
+    test "defaults to the free tiers when no paid scraper has a key" do
+      on_exit(Fixtures.put_config(deepseek_api_key: nil, firecrawl_api_key: nil))
+      assert Scrape.default_ladder() == [:direct, :impersonated]
+    end
+
+    test "adds each configured paid scraper after the free tiers, cheapest first" do
+      on_exit(Fixtures.put_config(firecrawl_api_key: "fc-key", deepseek_api_key: nil))
       assert Scrape.default_ladder() == [:direct, :impersonated, :firecrawl]
+
+      on_exit(Fixtures.put_config(firecrawl_api_key: "fc-key", deepseek_api_key: "ds-key"))
+      assert Scrape.default_ladder() == [:direct, :impersonated, :deepseek, :firecrawl]
+    end
+
+    test "per-call credentials add the paid scrapers too" do
+      on_exit(Fixtures.put_config(deepseek_api_key: nil, firecrawl_api_key: nil))
+      credentials = [deepseek_api_key: "ds-key", firecrawl_api_key: "fc-key"]
+
+      assert Scrape.default_ladder(credentials: credentials) ==
+               [:direct, :impersonated, :deepseek, :firecrawl]
+    end
+
+    test "a PDF no free tier converted ends the climb unless a later rung reads PDFs" do
+      unsupported = fn _url -> {:error, :unsupported} end
+      ladder = [{Scraper, reply: unsupported}, {PaidScraper, reply: ok_reply()}]
+
+      assert {:error, {:unreadable, %{attempts: [{Scraper, :unsupported}]}}} =
+               Scrape.run(@url, ladder: ladder)
+    end
+
+    test "firecrawl_pdf: true hands such a PDF to Firecrawl" do
+      on_exit(Fixtures.put_config(firecrawl_api_key: "fc-key", firecrawl_pdf: true))
+      unsupported = fn _url -> {:error, :unsupported} end
+
+      plug =
+        Fixtures.json_plug(self(), 200, %{
+          "success" => true,
+          "data" => %{"markdown" => Fixtures.readable_markdown()}
+        })
+
+      assert {:ok,
+              %Document{tier: :firecrawl, attempts: [{Scraper, :unsupported}, firecrawl: :ok]}} =
+               Scrape.run(@url,
+                 ladder: [{Scraper, reply: unsupported}, :firecrawl],
+                 req_options: [plug: plug]
+               )
+
+      Fixtures.put_config(firecrawl_pdf: false)
+
+      assert {:error, {:unreadable, %{attempts: [{Scraper, :unsupported}]}}} =
+               Scrape.run(@url,
+                 ladder: [{Scraper, reply: unsupported}, :firecrawl],
+                 req_options: [plug: plug]
+               )
+    end
+
+    test "reports every rung it tries, with what it cost" do
+      Fixtures.capture_telemetry([[:perplexed, :scrape, :attempt]])
+      blocked = fn _url -> {:error, :blocked} end
+
+      assert {:ok, _document} =
+               Scrape.run(@url,
+                 ladder: [{Scraper, reply: blocked}, {PaidScraper, reply: ok_reply()}]
+               )
+
+      assert_received {:telemetry, _, %{cost: +0.0},
+                       %{tier: Scraper, outcome: :blocked, billable: false}}
+
+      assert_received {:telemetry, _, %{cost: 0.01},
+                       %{tier: PaidScraper, outcome: :ok, billable: true}}
     end
 
     test "a configured ladder replaces the default" do

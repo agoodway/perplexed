@@ -36,6 +36,53 @@ defmodule Perplexed.VerdictTest do
                :js_shell
     end
 
+    test "a short page asking for a password or subscription is a login wall" do
+      teaser = "Our analysis of the market. Subscribe to continue reading."
+      assert Verdict.judge(teaser) == :login_wall
+
+      form = ~s(<form><input name="email"><input type="password" name="pw"></form>)
+      assert Verdict.judge("Sign in to your account", form) == :login_wall
+    end
+
+    test "a long article with a sign-in link is still ok" do
+      article =
+        String.duplicate("The council approved the zoning change after a long debate. ", 40)
+
+      assert Verdict.judge(article <> " Please sign in to comment.") == :ok
+    end
+
+    test "a short article with a prompt to sign in to comment is ok" do
+      article = String.duplicate("The council approved the zoning change. ", 25)
+      assert String.length(article) in 400..1_500
+      assert Verdict.judge(article <> " Please sign in to comment.") == :ok
+    end
+
+    test "a readable page with a login form in its header is ok" do
+      article = String.duplicate("The council approved the zoning change. ", 25)
+      header = ~s(<header><form><input name="user"><input type=password></form></header>)
+      assert Verdict.judge(article, header <> "<main>" <> article <> "</main>") == :ok
+    end
+
+    test "a near-empty page with an unquoted password field is a login wall" do
+      assert Verdict.judge("Members", "<form><input type=password></form>") == :login_wall
+    end
+
+    test "a JavaScript shell is a shell even with a password field" do
+      assert Verdict.judge("", ~s(<div id="root"></div><input type="password">)) == :js_shell
+    end
+
+    test "a sign-in wall counts up to 1,500 characters of text" do
+      wall = " Sign in to continue."
+      filler = fn total -> String.duplicate("a", total - String.length(wall)) end
+
+      assert Verdict.judge(filler.(1_500) <> wall) == :login_wall
+      assert Verdict.judge(filler.(1_501) <> wall) == :ok
+    end
+
+    test "a challenge wins over a login wall" do
+      assert Verdict.judge("Just a moment... sign in to continue") == :challenge
+    end
+
     test "a long article that mentions a captcha is still ok" do
       text = Fixtures.readable_text() <> " Some forms use a captcha. " <> Fixtures.readable_text()
       assert Verdict.judge(text) == :ok

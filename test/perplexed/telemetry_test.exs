@@ -7,6 +7,8 @@ defmodule Perplexed.TelemetryTest do
   alias Perplexed.Search.Hit
   alias ReqLLM.Context
 
+  import Perplexed.Fixtures, only: [capture_telemetry: 1]
+
   @events [
     [:perplexed, :search, :start],
     [:perplexed, :search, :stop],
@@ -38,10 +40,10 @@ defmodule Perplexed.TelemetryTest do
       assert {:ok, _result} = Search.run(provider, query)
 
       assert_received {:telemetry, [:perplexed, :search, :start], %{system_time: _},
-                       %{query: ^query, provider: ^provider}}
+                       %{query: ^query, provider: SearchProvider}}
 
       assert_received {:telemetry, [:perplexed, :search, :stop], measurements,
-                       %{query: ^query, provider: ^provider, result: :ok}}
+                       %{query: ^query, provider: SearchProvider, result: :ok}}
 
       assert is_integer(measurements.duration) and measurements.duration >= 0
       assert measurements.hits == 2
@@ -55,7 +57,7 @@ defmodule Perplexed.TelemetryTest do
       assert {:error, {:upstream, %{}}} = Search.run(provider, query)
 
       assert_received {:telemetry, [:perplexed, :search, :stop], measurements,
-                       %{query: ^query, provider: ^provider, result: :error}}
+                       %{query: ^query, provider: SearchProvider, result: :error}}
 
       assert measurements.cost == 0.0
       assert measurements.hits == 0
@@ -150,6 +152,24 @@ defmodule Perplexed.TelemetryTest do
 
       assert_received {:telemetry, [:perplexed, :model], %{input_tokens: 5, cost: nil},
                        %{model: ^model, phase: :plan}}
+    end
+  end
+
+  describe "attempt events" do
+    test "a search chain reports every attempt with whether it was billed" do
+      capture_telemetry([[:perplexed, :search, :attempt]])
+      failing = {SearchProvider, reply: fn _query -> {:error, {:upstream, %{}}} end}
+
+      answering =
+        {SearchProvider, reply: fn _query -> {:ok, [%Hit{url: "https://x.example/"}]} end}
+
+      Search.run([failing, answering], "q")
+
+      assert_received {:telemetry, _, %{cost: +0.0},
+                       %{provider: SearchProvider, outcome: {:error, _}, billable: false}}
+
+      assert_received {:telemetry, _, %{cost: 0.004},
+                       %{provider: SearchProvider, outcome: :ok, billable: true}}
     end
   end
 end

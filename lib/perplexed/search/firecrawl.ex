@@ -4,6 +4,8 @@ defmodule Perplexed.Search.Firecrawl do
 
   Never sends `scrapeOptions`, so a search costs two credits per ten results
   and returns snippets only; scrape pages with `Perplexed.Scrape` instead.
+  Priced at two credits of `Perplexed.Scraper.Firecrawl.credit_usd/0` (the
+  `firecrawl_credit_usd` setting).
   `:country` defaults to `"US"`.
 
   Needs `config :perplexed, firecrawl_api_key:`.
@@ -14,15 +16,19 @@ defmodule Perplexed.Search.Firecrawl do
   import Perplexed.Guards, only: [is_present: 1]
 
   alias Perplexed.{Config, Http}
+  alias Perplexed.Scraper.Firecrawl, as: FirecrawlScraper
   alias Perplexed.Search.Hit
 
   @url "https://api.firecrawl.dev/v2/search"
   @default_limit 8
   @max_query_length 500
   @timeout_ms 30_000
+  # Two credits per ten results, as of 2026-11-10 (firecrawl.dev/pricing);
+  # perplexed asks for at most ten.
+  @credits_per_search 2
 
   @impl true
-  def price(_opts), do: 0.00198
+  def price(_opts), do: @credits_per_search * FirecrawlScraper.credit_usd()
 
   @impl true
   def search(query, opts) when is_present(query) do

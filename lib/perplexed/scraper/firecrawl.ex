@@ -3,9 +3,14 @@ defmodule Perplexed.Scraper.Firecrawl do
   Firecrawl v2 scrape as a `Perplexed.Scraper`.
 
   Firecrawl renders JavaScript and handles many protected sites, at one
-  credit per HTML page. Its PDF parser stays off, because Firecrawl bills
-  PDFs per page; the local scrapers convert PDFs instead. Accepts a cached
-  copy up to a day old (`:max_age_ms`).
+  credit per HTML page, priced by `credit_usd/0` (the `firecrawl_credit_usd`
+  setting). Accepts a cached copy up to a day old (`:max_age_ms`).
+
+  Firecrawl also reads PDFs, at one credit per PDF page. A ladder hands it a
+  PDF the free tiers could not convert (no `Perplexed.PdfConverter`
+  configured) only with `firecrawl_pdf: true` in the settings; otherwise a
+  PDF ends the climb unread rather than billing per page. With a local
+  converter configured, PDFs never reach Firecrawl.
 
   Needs `config :perplexed, firecrawl_api_key:`.
   """
@@ -19,11 +24,30 @@ defmodule Perplexed.Scraper.Firecrawl do
   @url "https://api.firecrawl.dev/v2/scrape"
   @timeout_ms 60_000
   @max_age_ms 86_400_000
-  # One credit at the Standard plan's allowance rate ($99 / 100k credits).
-  @usd_per_page 0.00099
+  # One credit at the Standard plan's allowance rate ($99 / 100,000 credits),
+  # as of 2026-11-10 (firecrawl.dev/pricing).
+  @default_credit_usd 0.00099
 
   @impl true
-  def cost(%Document{}, _opts), do: @usd_per_page
+  def cost(%Document{}, _opts), do: credit_usd()
+
+  @doc """
+  USD per Firecrawl credit: the `firecrawl_credit_usd` setting, else
+  #{@default_credit_usd} (the Standard plan's $99 for 100,000). Set it to
+  what your plan pays, for example 0.0038 on Hobby, or about 0.0025 for
+  credits bought past a Standard allowance (all as of 2026-11-10). A
+  scraped page is one credit, a PDF one per page; a search is two (see
+  `Perplexed.Search.Firecrawl`).
+  """
+  @spec credit_usd() :: float()
+  def credit_usd, do: (Config.get(:firecrawl_credit_usd) || @default_credit_usd) * 1.0
+
+  @impl true
+  def retries?(:unsupported), do: Config.get(:firecrawl_pdf, false) == true
+  def retries?(_outcome), do: true
+
+  @impl true
+  def configured?(opts), do: Config.credentials?(:firecrawl_api_key, :firecrawl, opts)
 
   @impl true
   def scrape(url, opts) when is_present(url) do

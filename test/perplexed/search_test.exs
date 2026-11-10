@@ -4,7 +4,7 @@ defmodule Perplexed.SearchTest do
 
   alias Perplexed.{Document, Fixtures, Search}
   alias Perplexed.Fixtures.{PaidScraper, SearchProvider}
-  alias Perplexed.Search.{Hit, Result}
+  alias Perplexed.Search.{Cloudflare, Hit, Result}
 
   setup do
     restore =
@@ -121,13 +121,13 @@ defmodule Perplexed.SearchTest do
 
     test "an unknown Cloudflare upstream is an error, not a crash" do
       assert {:error, {:invalid_request, %{reason: {:unknown_upstream, "nope"}}}} =
-               Search.run({Perplexed.Search.Cloudflare, provider: "nope"}, "q")
+               Search.run({Cloudflare, provider: "nope"}, "q")
     end
   end
 
   describe "price/1" do
     test "prices a module spec by the upstream it names" do
-      assert Search.price({Perplexed.Search.Cloudflare, provider: "exa"}) == 0.007
+      assert Search.price({Cloudflare, provider: "exa"}) == 0.007
       assert Search.price(:cloudflare_exa) == 0.007
       assert Search.price(:ceramic) == 0.00025
     end
@@ -189,6 +189,88 @@ defmodule Perplexed.SearchTest do
                Search.run(:deepseek, "museum opening hours", req_options: [plug: plug])
 
       assert_received {:request, "/v1/tools/search", %{"need_content" => true, "count" => 8}}
+    end
+
+    test "keeps every result field, sends the question and caps the count" do
+      payload = %{
+        "results" => [
+          %{
+            "url" => "https://docs.example.org/museum",
+            "title" => "Museum",
+            "snippet" => "Short",
+            "summary" => "Long summary",
+            "content" => "",
+            "rerank_score" => 2.4,
+            "authority" => 4,
+            "site_name" => "Example Docs",
+            "site_icon" => "https://docs.example.org/icon.png",
+            "date" => nil
+          }
+        ]
+      }
+
+      plug = Fixtures.json_plug(self(), 200, payload)
+
+      assert {:ok, %Result{hits: [%Hit{content: nil, metadata: metadata}]}} =
+               Search.run(:deepseek, "museum hours",
+                 question: "When is the museum open on weekdays?",
+                 localization: "203.0.113.7",
+                 limit: 200,
+                 req_options: [plug: plug]
+               )
+
+      assert metadata == %{
+               snippet: "Short",
+               rerank_score: 2.4,
+               authority: 4,
+               site_name: "Example Docs",
+               site_icon: "https://docs.example.org/icon.png"
+             }
+
+      assert_received {:request, "/v1/tools/search",
+                       %{
+                         "ori_question" => "When is the museum open on weekdays?",
+                         "localization" => "203.0.113.7",
+                         "count" => 50
+                       }}
+    end
+
+    test "drops results under :min_rerank_score or :min_authority" do
+      result = fn url, score, authority ->
+        %{
+          "url" => url,
+          "title" => url,
+          "summary" => "s",
+          "rerank_score" => score,
+          "authority" => authority
+        }
+      end
+
+      plug =
+        Fixtures.json_plug(self(), 200, %{
+          "results" => [
+            result.("https://a.example/", 2.1, 4),
+            result.("https://b.example/", 0.9, 4),
+            result.("https://c.example/", 2.5, 1)
+          ]
+        })
+
+      assert {:ok, %Result{hits: [%Hit{url: "https://a.example/"}]}} =
+               Search.run(:deepseek, "q",
+                 min_rerank_score: 1.5,
+                 min_authority: 3,
+                 req_options: [plug: plug]
+               )
+    end
+
+    test "falls back to the snippet when there is no summary" do
+      plug =
+        Fixtures.json_plug(self(), 200, %{
+          "results" => [%{"url" => "https://a.example/", "snippet" => "Short", "summary" => ""}]
+        })
+
+      assert {:ok, %Result{hits: [%Hit{description: "Short"}]}} =
+               Search.run(:deepseek, "q", req_options: [plug: plug])
     end
 
     test "a missing key is an authentication error" do

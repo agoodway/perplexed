@@ -5,4 +5,9 @@ defmodule Perplexed.Guards do
 
   @doc "A non-empty binary."
   defguard is_present(value) when is_binary(value) and byte_size(value) > 0
+
+  @doc "`value` when it is a non-empty binary, else `nil` (blank or not text)."
+  @spec presence(term()) :: String.t() | nil
+  def presence(value) when is_present(value), do: value
+  def presence(_blank), do: nil
 end

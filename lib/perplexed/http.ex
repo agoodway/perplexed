@@ -45,10 +45,16 @@ defmodule Perplexed.Http do
       when status in 200..299,
       do: {:ok, response}
 
-  def classify({:ok, %Req.Response{status: status, body: body}}, provider, url) do
+  def classify({:ok, %Req.Response{status: status, body: body} = response}, provider, url) do
     message = message(body)
     reason = status_reason(status, message)
-    metadata = %{provider: provider, url: url, status: status, message: message}
+
+    metadata =
+      put_wait(
+        %{provider: provider, url: url, status: status, message: message},
+        retry_after_ms(response)
+      )
+
     Telemetry.maybe_alert(provider, reason, metadata)
     {:error, {reason, metadata}}
   end
@@ -57,10 +63,67 @@ defmodule Perplexed.Http do
     do:
       {:error, {:transport, %{provider: provider, url: url, reason: transport_reason(exception)}}}
 
+  @doc """
+  How long the server asked us to wait, in ms: `Retry-After` (seconds or an
+  HTTP date), else the IETF `RateLimit-Reset` (seconds), else
+  `X-RateLimit-Reset` (seconds, or a Unix time when that large). `nil` for a
+  2xx reply or when it sent none.
+  """
+  @spec retry_after_ms(Req.Response.t()) :: non_neg_integer() | nil
+  def retry_after_ms(%Req.Response{status: status}) when status in 200..299, do: nil
+
+  def retry_after_ms(response) do
+    [
+      {"retry-after", &retry_after/1},
+      {"ratelimit-reset", &seconds/1},
+      {"x-ratelimit-reset", &reset_time/1}
+    ]
+    |> Enum.find_value(fn {header, parse} ->
+      response |> Req.Response.get_header(header) |> List.first() |> parse_header(parse)
+    end)
+  end
+
+  defp parse_header(nil, _parse), do: nil
+  defp parse_header(value, parse), do: value |> String.trim() |> parse.()
+
+  defp retry_after(value), do: seconds(value) || http_date(value)
+
+  defp seconds(value), do: value |> Integer.parse() |> seconds_ms()
+
+  defp seconds_ms({seconds, ""}) when seconds >= 0, do: seconds * 1000
+  defp seconds_ms(_invalid), do: nil
+
+  defp reset_time(value), do: value |> Integer.parse() |> reset_ms()
+
+  @unix_time_floor 1_000_000_000
+  defp reset_ms({at, ""}) when at >= @unix_time_floor,
+    do: max(at - System.os_time(:second), 0) * 1000
+
+  defp reset_ms(parsed), do: seconds_ms(parsed)
+
+  @months ~w(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)
+  # RFC 9110 IMF-fixdate: "Sun, 06 Nov 1994 08:49:37 GMT".
+  defp http_date(value) do
+    with [_, day, month, year, time] <-
+           Regex.run(~r/^\w{3}, (\d{2}) (\w{3}) (\d{4}) (\d{2}:\d{2}:\d{2}) GMT$/, value),
+         index when is_integer(index) <- Enum.find_index(@months, &(&1 == month)),
+         {:ok, date} <- Date.new(String.to_integer(year), index + 1, String.to_integer(day)),
+         {:ok, time} <- Time.from_iso8601(time),
+         {:ok, at} <- DateTime.new(date, time) do
+      max(DateTime.diff(at, DateTime.utc_now(), :millisecond), 0)
+    else
+      _invalid -> nil
+    end
+  end
+
   @doc "An `:invalid_response` error for a body that is not the documented shape."
   @spec invalid_response(atom(), String.t(), term()) :: {:error, {:invalid_response, map()}}
   def invalid_response(provider, url, body),
     do: {:error, {:invalid_response, %{provider: provider, url: url, message: message(body)}}}
+
+  # How long the provider asked us to wait, when it said.
+  defp put_wait(metadata, nil), do: metadata
+  defp put_wait(metadata, ms), do: Map.put(metadata, :retry_after_ms, ms)
 
   defp status_reason(status, _message) when status in [401, 403], do: :authentication
   defp status_reason(402, _message), do: :quota_exhausted

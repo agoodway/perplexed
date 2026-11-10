@@ -2,7 +2,7 @@ defmodule PerplexedTest do
   # Starts and stops its own Perplexed instance, which touches the shared settings.
   use ExUnit.Case, async: false
 
-  alias Perplexed.{Config, Fixtures}
+  alias Perplexed.{Config, Fixtures, Search, Settings}
   alias Perplexed.Fixtures.SearchProvider
   alias Perplexed.Search.{Hit, Result}
 
@@ -33,7 +33,7 @@ defmodule PerplexedTest do
 
   describe "settings safety" do
     test "the settings owner keeps no copy of the settings in its state" do
-      assert :sys.get_state(Perplexed.Settings) == nil
+      assert :sys.get_state(Settings) == nil
     end
 
     test "a child spec does not expose its settings when inspected" do
@@ -65,8 +65,8 @@ defmodule PerplexedTest do
   describe "settings" do
     test "a configured price overrides a provider's list price" do
       on_exit(Fixtures.put_config(prices: %{ceramic: 0.001}))
-      assert Perplexed.Search.price(:ceramic) == 0.001
-      assert Perplexed.Search.price(:linkup) == 0.005
+      assert Search.price(:ceramic) == 0.001
+      assert Search.price(:linkup) == 0.005
     end
   end
 end

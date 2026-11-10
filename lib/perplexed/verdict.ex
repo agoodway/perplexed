@@ -8,18 +8,26 @@ defmodule Perplexed.Verdict do
   tier to try next: a challenge is worth an impersonated retry, while a
   JavaScript shell needs a real browser.
 
-  Markup markers that only a challenge page carries (`cf-chl-`,
-  `challenge-platform`) count on any page under 4,000 characters. Phrases a
-  real page could also contain ("captcha", "access denied") count only on a
-  page with almost no readable text, so an article that mentions a captcha
-  is not mistaken for a challenge.
+  Markup markers that only a challenge page carries (such as `cf-chl-` and
+  `challenge-platform`) count on any page of at most 4,000 characters.
+  Phrases a real page could also contain ("captcha", "access denied") count
+  only on a page of at most 1,000 characters, so an article that mentions a
+  captcha is not mistaken for a challenge. A page of at most 1,500 characters that
+  says it is behind a sign-in or subscription ("sign in to continue",
+  "subscribe to continue reading"), or a near-empty page holding a
+  password field, is a `:login_wall`; a prompt to sign in to comment is not.
+  Like a JavaScript shell, a login wall skips the impersonated rung: a
+  browser fingerprint does not sign in.
   """
 
-  @type t :: :ok | :challenge | :js_shell | :thin
+  @type t :: :ok | :challenge | :login_wall | :js_shell | :thin
 
   @min_readable_chars 400
   @markup_scan_max_chars 4_000
   @phrase_scan_max_chars 1_000
+  # A sign-in or subscribe wall leaves a little teaser text, so it is looked
+  # for on pages up to this long.
+  @wall_scan_max_chars 1_500
 
   @challenge_markup [
     "cf-chl-",
@@ -47,6 +55,28 @@ defmodule Perplexed.Verdict do
     "error 1020"
   ]
 
+  @password_markup [
+    ~s(type="password"),
+    ~s(type='password'),
+    "type=password",
+    ~s(autocomplete="current-password")
+  ]
+
+  # Only phrases that put the page itself behind the wall: "sign in to
+  # comment" sits under real articles and does not count.
+  @login_wall_phrases [
+    "sign in to continue",
+    "log in to continue",
+    "login to continue",
+    "sign in to view this",
+    "log in to view this",
+    "create a free account to continue",
+    "subscribe to continue reading",
+    "to continue reading, subscribe",
+    "this content is for subscribers",
+    "already a subscriber? sign in"
+  ]
+
   @js_shell_markers [
     ~s(id="root"),
     ~s(id="app"),
@@ -55,6 +85,21 @@ defmodule Perplexed.Verdict do
     "please enable javascript",
     "you need to enable javascript",
     "requires javascript"
+  ]
+
+  # Checked in order; the first rule whose length limit the page is within
+  # and whose markers it contains decides. A page shorter than
+  # @min_readable_chars that matches nothing else is thin.
+  @short_max @min_readable_chars - 1
+  @rules [
+    {:challenge, @markup_scan_max_chars, @challenge_markup},
+    {:challenge, @phrase_scan_max_chars, @challenge_phrases},
+    {:login_wall, @wall_scan_max_chars, @login_wall_phrases},
+    {:js_shell, @short_max, @js_shell_markers},
+    # A sign-in form on a page with almost nothing else on it; a login box
+    # in the header of a real article does not count.
+    {:login_wall, @short_max, @password_markup},
+    {:thin, @short_max, :any}
   ]
 
   @doc """
@@ -66,28 +111,17 @@ defmodule Perplexed.Verdict do
   def judge(text, raw \\ nil) when is_binary(text) do
     readable = String.trim(text)
     length = String.length(readable)
-    short? = length < @min_readable_chars
     scan = scan_text(readable, raw)
-
-    cond do
-      length <= @markup_scan_max_chars and
-          Enum.any?(@challenge_markup, &String.contains?(scan, &1)) ->
-        :challenge
-
-      length <= @phrase_scan_max_chars and
-          Enum.any?(@challenge_phrases, &String.contains?(scan, &1)) ->
-        :challenge
-
-      short? and Enum.any?(@js_shell_markers, &String.contains?(scan, &1)) ->
-        :js_shell
-
-      short? ->
-        :thin
-
-      true ->
-        :ok
-    end
+    Enum.find_value(@rules, :ok, &verdict(&1, length, scan))
   end
+
+  defp verdict({verdict, max_chars, markers}, length, scan) when length <= max_chars,
+    do: matches?(markers, scan) && verdict
+
+  defp verdict(_rule, _length, _scan), do: nil
+
+  defp matches?(:any, _scan), do: true
+  defp matches?(markers, scan), do: Enum.any?(markers, &String.contains?(scan, &1))
 
   defp scan_text(readable, raw) when is_binary(raw),
     do: String.downcase(readable <> "\n" <> String.slice(raw, 0, 20_000))

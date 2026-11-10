@@ -26,6 +26,8 @@ defmodule Perplexed.Search.Cloudflare do
   @max_query_length 1_024
   @timeout_ms 20_000
   @provider_names %{"ceramic" => :ceramic, "linkup" => :linkup, "exa" => :cloudflare_exa}
+  # USD per request, list prices as of 2026-11-10
+  # (developers.cloudflare.com/web-search/providers).
   @prices %{"ceramic" => 0.00025, "linkup" => 0.005, "exa" => 0.007}
 
   @impl true
