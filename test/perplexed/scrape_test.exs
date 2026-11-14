@@ -163,6 +163,19 @@ defmodule Perplexed.ScrapeTest do
   end
 
   describe "run/2 ladder" do
+    test "a Firecrawl site refusal preserves the outcome and tries the next scraper" do
+      plug = Fixtures.json_plug(self(), 403, %{"error" => "We do not support this site"})
+
+      assert {:ok, %Document{attempts: attempts}} =
+               Scrape.run(@url,
+                 ladder: [:firecrawl, {Scraper, reply: ok_reply()}],
+                 credentials: [firecrawl_api_key: "test-key"],
+                 req_options: [plug: plug]
+               )
+
+      assert attempts == [{:firecrawl, :blocked}, {Scraper, :ok}]
+    end
+
     test "escalates past a refusal to the next scraper" do
       plug = Fixtures.plug(403, "Forbidden", [{"content-type", "text/html"}])
 

@@ -5,7 +5,7 @@ defmodule Perplexed.Http do
   #
   # Errors are `{:error, {reason, metadata}}` with `reason` one of
   # `:authentication`, `:quota_exhausted`, `:rate_limited`, `:not_found`,
-  # `:upstream`, `:invalid_response` or `:transport`. Credit, credential and
+  # `:blocked`, `:upstream`, `:invalid_response` or `:transport`. Credit, credential and
   # throttling failures also emit a `Perplexed.Telemetry` provider alert.
 
   import Perplexed.Guards, only: [is_present: 1]
@@ -47,7 +47,7 @@ defmodule Perplexed.Http do
 
   def classify({:ok, %Req.Response{status: status, body: body} = response}, provider, url) do
     message = message(body)
-    reason = status_reason(status, message)
+    reason = response_reason(provider, status, body, message)
 
     metadata =
       put_wait(
@@ -124,6 +124,22 @@ defmodule Perplexed.Http do
   # How long the provider asked us to wait, when it said.
   defp put_wait(metadata, nil), do: metadata
   defp put_wait(metadata, ms), do: Map.put(metadata, :retry_after_ms, ms)
+
+  # A Firecrawl site-policy refusal is a per-URL outcome, not a credential failure.
+  defp response_reason(:firecrawl, 403, body, message) do
+    if unsupported_site?(body, message), do: :blocked, else: :authentication
+  end
+
+  defp response_reason(_provider, status, _body, message), do: status_reason(status, message)
+
+  defp unsupported_site?(%{"code" => "UNSUPPORTED_SITE"}, _message), do: true
+
+  defp unsupported_site?(_body, message) when is_present(message) do
+    normalized = String.downcase(message)
+    normalized == "unsupported_site" or String.contains?(normalized, "do not support this site")
+  end
+
+  defp unsupported_site?(_body, _message), do: false
 
   defp status_reason(status, _message) when status in [401, 403], do: :authentication
   defp status_reason(402, _message), do: :quota_exhausted

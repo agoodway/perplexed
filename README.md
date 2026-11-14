@@ -25,7 +25,7 @@ finds, and turns them into a cited answer on any model
 ```elixir
 def deps do
   [
-    {:perplexed, "~> 0.2.0"}
+    {:perplexed, "~> 0.2.1"}
   ]
 end
 ```

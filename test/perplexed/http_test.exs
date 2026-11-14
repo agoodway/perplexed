@@ -224,6 +224,43 @@ defmodule Perplexed.HttpTest do
   end
 
   describe "provider alerts" do
+    test "Firecrawl unsupported-site refusals are blocked without a provider alert" do
+      for body <- [
+            %{
+              "error" =>
+                "We apologize for the inconvenience but we do not support this site. " <>
+                  "If you are part of an enterprise and want to have a further conversation about this, " <>
+                  "please contact our sales team here: https://www.firecrawl.dev/contact-sales"
+            },
+            %{"error" => "We Do Not Support This Site"},
+            %{"code" => "UNSUPPORTED_SITE", "error" => "Site is unavailable"},
+            %{"error" => "UNSUPPORTED_SITE"}
+          ] do
+        assert {:error, {:blocked, %{provider: :firecrawl, status: 403}}} =
+                 post(:firecrawl, json(403, body))
+
+        refute_received {:alert, _measurements, _metadata}
+      end
+    end
+
+    test "unsupported-site evidence does not suppress other credential alerts", %{
+      provider: provider
+    } do
+      for {source, status, body} <- [
+            {:firecrawl, 401, %{"error" => "We do not support this site"}},
+            {provider, 403, %{"error" => "We do not support this site"}},
+            {provider, 403, %{"code" => "UNSUPPORTED_SITE"}},
+            {:firecrawl, 403, %{"error" => "Forbidden"}},
+            {:firecrawl, 403, %{}},
+            {:firecrawl, 403, %{"error" => ""}}
+          ] do
+        assert {:error, {:authentication, _metadata}} = post(source, json(status, body))
+
+        assert_received {:alert, %{count: 1},
+                         %{provider: ^source, status: ^status, reason: :authentication}}
+      end
+    end
+
     test "credential, credit and throttling failures alert", %{provider: provider} do
       for {status, reason} <- [
             {401, :authentication},

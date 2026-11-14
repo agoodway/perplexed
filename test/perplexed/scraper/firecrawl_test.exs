@@ -64,6 +64,11 @@ defmodule Perplexed.Scraper.FirecrawlTest do
   end
 
   describe "scrape/2 failures" do
+    test "a refused site is blocked, not a rejected credential" do
+      plug = Fixtures.json_plug(self(), 403, %{"error" => "We do not support this site"})
+      assert Firecrawl.scrape(@url, opts(plug)) == {:error, :blocked}
+    end
+
     test "402 is quota exhausted" do
       plug = Fixtures.json_plug(self(), 402, %{"error" => "Payment required"})
       assert Firecrawl.scrape(@url, opts(plug)) == {:error, :quota_exhausted}
